@@ -70,3 +70,4 @@ if not override and path.isfile(dungeon_path):
 else:
     dungeon = open(dungeon_path, "w")
     dungeon.write(json.dumps(grammar, indent=2))
+    print "Grammar successfully saved to " + dungeon_path + "!"
