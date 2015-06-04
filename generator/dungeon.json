@@ -1,0 +1,18 @@
+{
+  "origin": [
+    "#dungeon#"
+  ], 
+  "dungeon": [
+    "#start#, #middle#, #end#"
+  ], 
+  "end": [
+    "(room end)"
+  ], 
+  "start": [
+    "(room start)"
+  ], 
+  "middle": [
+    "(room)", 
+    "(room), #middle#"
+  ]
+}
