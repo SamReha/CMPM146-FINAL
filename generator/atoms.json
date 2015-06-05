@@ -1,7 +1,38 @@
 {
-    "floor":[],
-    "enemy":[],
-    "pickup":[],
-    "obstacle":[],
-    "settings":{}
+    "floor":[
+        {
+            "type":"room"
+        }
+    ],
+    "enemy":[
+        {
+            "type":"skeletron"
+        }
+    ],
+    "pickup":[
+        {
+            "type":"armor"
+        },
+        {
+            "type":"weapon"
+        },
+        {
+            "type":"treasure"
+        }
+    ],
+    "obstacle":[
+        {
+            "type":"keylock"
+        },
+        {
+            "type":"maze"
+        }
+    ],
+    "settings":{
+        "always_fixed_length":false,
+        "fixed_length":5,
+
+        "use_all_atoms":false,
+        "always_overwrite_old_files":true
+    }
 }
