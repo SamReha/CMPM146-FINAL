@@ -1,3 +1,5 @@
+import java.awt.Image;
+
 public class Player {
     int maxHealth;
     int health;
@@ -7,8 +9,9 @@ public class Player {
     Armor armor;
     boolean dead;
     int healthRegen;
+    Image hair;
     
-    public Player(int h, int s, Weapon w, Armor a){
+    public Player(int h, int s, Weapon w, Armor a, Image ha){
         this.maxHealth = h;
         this.health = h;
         strength = s;
@@ -19,6 +22,7 @@ public class Player {
         playery = -1;
         playerz = -1;
         healthRegen = 0;
+        hair = ha;
     }
     
     public int getX(){
@@ -45,6 +49,10 @@ public class Player {
         return armor;
     }
     
+    public Image getHair(){
+        return hair;
+    }
+    
     public void setHealth(int h){
         health = h;
     }
@@ -67,6 +75,10 @@ public class Player {
     
     public void setZ(int z){
         playerz = z;
+    }
+    
+    public void setHair(Image h){
+        hair = h;
     }
     
     public void attack(Enemy e){

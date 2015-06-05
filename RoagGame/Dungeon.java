@@ -37,6 +37,9 @@ public class Dungeon extends JPanel implements KeyListener {
     static Image animalskin;
     static Image geveningstar;
     static Image weveningstar;
+    static Image metalbreastplate;
+    static Image greendress;
+    static Image redhair;
 	static boolean game = true;
 	static int worldwidth = 0;
     static int worldheight = 0;
@@ -64,7 +67,6 @@ public class Dungeon extends JPanel implements KeyListener {
 	public Dungeon(String file){
 		addKeyListener(this);
 		setFocusable(true);
-        player = new Player(10, 1, null, null);
         ImageIcon pl = new ImageIcon("sprites\\human_f.png");
         ImageIcon fl = new ImageIcon("sprites\\rect_gray2.png");
         ImageIcon wa = new ImageIcon("sprites\\wall_vines6.png");
@@ -75,6 +77,9 @@ public class Dungeon extends JPanel implements KeyListener {
         ImageIcon as = new ImageIcon("sprites\\animal_skin.png");
         ImageIcon groundES = new ImageIcon("sprites\\eveningstar1.png");
         ImageIcon wieldES = new ImageIcon("sprites\\eveningstar.png");
+        ImageIcon mbs = new ImageIcon("sprites\\bplate_metal1.png");
+        ImageIcon gd = new ImageIcon("sprites\\dress_green.png");
+        ImageIcon rh = new ImageIcon("sprites\\fem_red.png");
         playerImg = pl.getImage();
         floor = fl.getImage();
         wall = wa.getImage();
@@ -85,9 +90,13 @@ public class Dungeon extends JPanel implements KeyListener {
         animalskin = as.getImage();
         weveningstar = wieldES.getImage();
         geveningstar = groundES.getImage();
+        metalbreastplate = mbs.getImage();
+        greendress = gd.getImage();
+        redhair = rh.getImage();
         enemies = new ArrayList<Enemy>();
         armor = new ArrayList<Armor>();
         weapons = new ArrayList<Weapon>();
+        player = new Player(10, 1, null, new Armor("Green Dress", "Chest", 0, -1, -1, -1, greendress), redhair);
 		loadDungeon(file);
         player.setZ(0);
         
@@ -166,6 +175,9 @@ public class Dungeon extends JPanel implements KeyListener {
                             }
                             if (we != null){
                                 g2d.drawImage(we.getWieldImage(), lineNum * 32, xNum * 32, null);
+                            }
+                            if (player.getHair() != null){
+                                g2d.drawImage(player.getHair(), lineNum * 32, xNum * 32, null);
                             }
                         }
                     }
