@@ -22,7 +22,9 @@ CLASSES = \
 		Enemy.java \
 		Frame.java \
 		Level.java \
-		Player.java
+		Player.java \
+        PriorTuple.java \
+        Point.java
 
 default: classes
 

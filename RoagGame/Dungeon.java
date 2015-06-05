@@ -20,7 +20,7 @@ public class Dungeon extends JPanel implements KeyListener {
 	 static final char WALL = '#';
 	 static final char STAIRS_DOWN = 'v';
 	 static final char STAIRS_UP = '^';
-     static final char SKELETON = 's';
+     static final char SKELETRON = 's';
      static final char PLAYER = '@';
      static final char EMPTY = ' ';
      static final char ARMOR = 'a';
@@ -97,15 +97,35 @@ public class Dungeon extends JPanel implements KeyListener {
         armor = new ArrayList<Armor>();
         weapons = new ArrayList<Weapon>();
         player = new Player(10, 1, null, new Armor("Green Dress", "Chest", 0, -1, -1, -1, greendress), redhair);
-		loadDungeon(file);
-        player.setZ(0);
+		//loadDungeon(file);
+        Level start = generateTopLevel();
+        world.add(start);
+        Level middle = generateMiddleLevel();
+        world.add(middle);
+        System.out.println(start);
+        placePlayer();
         
-        if (player.getX() == -1 || player.getY() == -1){
-            setPlayerNearestOpen(1, 1);
-        }
+        //if (player.getX() == -1 || player.getY() == -1){
+        //    setPlayerNearestOpen(1, 1);
+        //}
 		
 
 	}
+    
+    public void placePlayer(){
+        for (int i = 0; i < world.size(); i++){
+            ArrayList<String> lev = world.get(i).getTerrain();
+            for (int j = 0; j < lev.size(); j++){
+                if (lev.get(j).indexOf('@') != -1){
+                    System.out.println("(" + j + ", " + lev.get(j).indexOf('@') + ", " + i);
+                    player.setX(j);
+                    player.setY(lev.get(j).indexOf('@'));
+                    player.setZ(i);
+                    return;
+                }
+            }
+        }
+    }
 	
 	public void paint(Graphics g){
 		super.paint(g);
@@ -138,7 +158,7 @@ public class Dungeon extends JPanel implements KeyListener {
                             g2d.drawImage(floor, lineNum * 32, xNum * 32, null);
                             g2d.drawImage(stairsup, lineNum * 32, xNum * 32, null);
                         }
-                        else if (a == SKELETON || a == ARMOR || a == WEAPON){
+                        else if (a == SKELETRON || a == ARMOR || a == WEAPON || a == PLAYER){
                             g2d.drawImage(floor, lineNum * 32, xNum * 32, null);
                         }
                         else {
@@ -235,8 +255,8 @@ public class Dungeon extends JPanel implements KeyListener {
             for (String line : currLev.getTerrain()){
                 for (int j = 0; j < line.length(); j++){
                     char a = line.charAt(j);
-                    if (a == SKELETON){
-                        enemies.add(new Enemy("Skeleton", 5, 1, 1, xpos, j, zlev, skeleton));
+                    if (a == SKELETRON){
+                        enemies.add(new Enemy("Skeletron", 5, 1, 1, xpos, j, zlev, skeleton));
                     } else if (a == PLAYER){
                         player.setX(xpos);
                         player.setY(j);
@@ -466,7 +486,7 @@ public class Dungeon extends JPanel implements KeyListener {
     }
     
     public boolean walkable(char a){
-        if (a == FLOOR || a == SKELETON || a == STAIRS_UP || a == STAIRS_DOWN || a == ARMOR || a == WEAPON){
+        if (a == FLOOR || a == SKELETRON || a == STAIRS_UP || a == STAIRS_DOWN || a == ARMOR || a == WEAPON || a == PLAYER){
             return true;
         }
         
@@ -483,48 +503,6 @@ public class Dungeon extends JPanel implements KeyListener {
 	public boolean emptySpace(char a){
 		if (a == FLOOR){
 			return true;
-		}
-		
-		return false;
-	}
-	
-	public boolean pathFromTo(int x, int y, int x2, int y2){
-		TreeMap<Point, Integer> distance = new TreeMap<Point, Integer>();
-		TreeMap<Point, Point> prev = new TreeMap<Point, Point>();
-		Point source = new Point(x, y);
-		Point dest = new Point(x2, y2);
-		prev.put(source, null);
-		distance.put(source, 0);
-		PriorTuple start = new PriorTuple(0, source);
-		PriorityQueue<PriorTuple> pq = new PriorityQueue<PriorTuple>(comparator);
-        ArrayList<PriorTuple> neighbors = null;
-		
-		pq.add(start);
-		
-		while (pq.size() != 0){
-			PriorTuple curr = pq.poll();
-			
-			if (curr.getPoint().equals(dest)){
-				return true;
-			}
-			
-			neighbors = getAdj(curr.getPoint());
-			
-			for (PriorTuple neigh : neighbors){
-				int alt = distance.get(curr.getPoint()) + neigh.getDist();
-				if (!distance.containsKey(neigh.getPoint()) /*|| alt < distance.get(neigh.getPoint())*/){
-                    if (distance.containsKey(neigh.getPoint())){
-                        System.out.println("(" + neigh.getPoint().getX() + ", " + neigh.getPoint().getY() + ")");
-                    System.out.println(alt + " " + distance.get(neigh.getPoint()));
-                    System.out.println(alt < distance.get(neigh.getPoint()));
-                    }
-                    
-					distance.put(neigh.getPoint(), alt);
-					PriorTuple newpt = new PriorTuple(alt, neigh.getPoint());
-					prev.put(neigh.getPoint(), curr.getPoint());
-                    pq.add(newpt);
-				}
-			}
 		}
 		
 		return false;
@@ -563,7 +541,7 @@ public class Dungeon extends JPanel implements KeyListener {
         return Math.sqrt(Math.pow((p2.getX() - p1.getX()), 2) + Math.pow((p2.getY() - p1.getY()), 2));
     }
     
-	class Point implements Comparable<Point>{
+	/*class Point implements Comparable<Point>{
 		int x, y;
 		
 		public Point(int x, int y){
@@ -631,6 +609,29 @@ public class Dungeon extends JPanel implements KeyListener {
 		public Point getPoint(){
 			return p;
 		}
-	}
+	}*/
+    
+    public Level generateTopLevel(){
+        int wid = (int) (Math.random() * 100) + 10;
+        int hei = (int) (Math.random() * 100) + 10;
+        Level newLev = new Level(wid, hei);
+        newLev.generatePlayerAndStairs();
+        System.out.println("player and stairs added");
+        newLev.generateWalls();
+        System.out.println("walls added");
+        return newLev;
+        
+    }
+    
+    public Level generateMiddleLevel(){
+        int wid = (int) (Math.random() * 100) + 10;
+        int hei = (int) (Math.random() * 100) + 10;
+        Level newLev = new Level(wid, hei);
+        newLev.generateStairs();
+        System.out.println("player and stairs added");
+        newLev.generateWalls();
+        System.out.println("walls added");
+        return newLev;
+    }
 	
 }

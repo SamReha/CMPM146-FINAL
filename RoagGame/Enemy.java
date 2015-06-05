@@ -271,7 +271,7 @@ public class Enemy{
         return false;
     }
     
-    class Point implements Comparable<Point>{
+    /*class Point implements Comparable<Point>{
 		int x, y;
 		
 		public Point(int x, int y){
@@ -339,7 +339,7 @@ public class Enemy{
 		public Point getPoint(){
 			return p;
 		}
-	}
+	}*/
     
     
 }
