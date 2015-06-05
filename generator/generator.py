@@ -56,7 +56,7 @@ def main():
     grammar["room"] = generate_room_rule(floor_types)
 
     # Flip a coin to determine if we're getting fixed length or non-fixed length dungeon grammars
-    if randint(0, 1) or settings['always_fixed_length']:
+    if (randint(0, 1) is 1) or settings['always_fixed_length']:
         if settings['always_fixed_length']:
             dungeon_length = settings['fixed_length'] - 1
         else:
@@ -68,7 +68,7 @@ def main():
             
         grammar['middle'] = [middle_rule_string]
     else:   # Make a grammar capable of generating dungeons of varying lengths
-        grammar['middle'] = ["(room)", "(room), #middle#"]  # Placeholder!
+        grammar['middle'] = ["#room#", "#room#, #middle#"]  # Placeholder!
     
     print "Grammar Generated successfully!"
 
