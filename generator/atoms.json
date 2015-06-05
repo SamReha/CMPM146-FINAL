@@ -33,6 +33,6 @@
         "fixed_length":5,
 
         "use_all_atoms":false,
-        "always_overwrite_old_files":true
+        "always_overwrite_old_files":false
     }
 }

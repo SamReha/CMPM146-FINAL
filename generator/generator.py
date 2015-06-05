@@ -9,6 +9,8 @@ import getopt
 import os.path as path
 import json
 
+from random import randint
+
 def main():
     atom_path, dungeon_path, override = setup(sys.argv)
 
@@ -36,38 +38,42 @@ def main():
 
     # Use atoms to generate a Tracery grammar with semi-random properties
     print "Generating grammar..."
-
-    if not settings['use_all_atoms']:
-        floors = get_potential_floors(floors)
-        enemies = get_potential_enemies(enemies)
-        pickups = get_potential_pickups(pickups)
-        obstacles = get_potential_obstacles(obstacles)
-
-
-    # As a demo, let's just hard-code that boring example grammar I made earlier
     grammar = dict(end = ["(room end)"],
                    middle = ["(room)", "(room), #middle#"],
                    start = ["(room start)"],
                    dungeon = ["#start#, #middle#, #end#"],
                    origin = ["#dungeon#"]
                   )
+
+    if not settings['use_all_atoms']:
+        floors = random_reduce(floors)
+        enemies = random_reduce(enemies)
+        pickups = random_reduce(pickups)
+        obstacles = random_reduce(obstacles)
+
+    # From the available set of floors and obstacles, figure out all possible combinations and add them to the grammar as a "r
+    floor_types = get_room_types(floors, obstacles)
+    grammar["room"] = generate_room_rule(floor_types)
+
+    # Flip a coin to determine if we're getting fixed length or non-fixed length dungeon grammars
+    if randint(0, 1) or settings['always_fixed_length']:
+        if settings['always_fixed_length']:
+            dungeon_length = settings['fixed_length'] - 1
+        else:
+            dungeon_length = randint(0, 99)
+            
+        middle_rule_string = "#room#"
+        for i in range(0, dungeon_length):
+            middle_rule_string += ", #room#"
+            
+        grammar['middle'] = [middle_rule_string]
+    else:   # Make a grammar capable of generating dungeons of varying lengths
+        grammar['middle'] = ["(room)", "(room), #middle#"]  # Placeholder!
+    
     print "Grammar Generated successfully!"
 
     # Spit that out grammar as a json file (dungeon.json).
-    print "Saving grammar to " + dungeon_path + "..."
-    if not override and path.isfile(dungeon_path):
-        go_ahead = raw_input(dungeon_path + " already exists. Would you like to overwrite it? (y/n): ")
-        if go_ahead is "y" or go_ahead is "Y":
-            dungeon = open(dungeon_path, "w")
-            dungeon.write(json.dumps(grammar, indent=2))
-            print "Grammar successfully saved to " + dungeon_path + "!"
-        else:
-            print "Exiting generation with status 0"
-            sys.exit(0)
-    else:
-        dungeon = open(dungeon_path, "w")
-        dungeon.write(json.dumps(grammar, indent=2))
-        print "Grammar successfully saved to " + dungeon_path + "!"
+    save_dungeon(grammar, dungeon_path, override)
         
 def setup(arguments):
     atom_p = "atoms.json"
@@ -90,18 +96,53 @@ def setup(arguments):
             atom_p = arg
             
     return atom_p, dungeon_p, override_p
+   
+## Saves the tracery-formatted grammar dunegon_trace to the path specified by path_to_dungeon
+def save_dungeon(dungeon_trace, path_to_dungeon, override_status):
+    print "Saving grammar to " + path_to_dungeon + "..."
+    if not override_status and path.isfile(path_to_dungeon):
+        go_ahead = raw_input(path_to_dungeon + " already exists. Would you like to overwrite it? (y/n): ")
+        if go_ahead is "y" or go_ahead is "Y":
+            dungeon = open(path_to_dungeon, "w")
+            dungeon.write(json.dumps(dungeon_trace, indent=2))
+            print "Grammar successfully saved to " + path_to_dungeon + "!"
+        else:
+            print "Exiting generation with status 0"
+            sys.exit(0)
+    else:
+        dungeon = open(path_to_dungeon, "w")
+        dungeon.write(json.dumps(dungeon_trace, indent=2))
+        print "Grammar successfully saved to " + path_to_dungeon + "!"
         
-def get_potential_floors(floor_set):
-    return floor_set
+## Randomly filter out some atoms with no heuristic
+def random_reduce(atom_set):
+    reduced_set = list(atom_set)
+    if len(atom_set) > 1:
+        # Roll to see how many will get excluded (but be sure to leave at LEAST one atom!)
+        numToKill = randint(0, len(atom_set)-1)
+        while numToKill > 0:
+            random_index = randint(0, len(reduced_set)-1)
+            reduced_set.pop(random_index)
+            numToKill -= 1
     
-def get_potential_enemies(enemy_set):
-    return enemy_set
+    return reduced_set
     
-def get_potential_pickups(pickup_set):
-    return pickup_set
+## Returns a list of rooms types defined as (floor_type, obstacle_type) tuples
+def get_room_types(floor_set, obstacle_set):
+    room_set = []
+    obstacle_set.append(dict(type="no_obstacle"))
+    for floor in floor_set:
+        for obstacle in obstacle_set:
+            room_set.append((floor['type'], obstacle['type']))
+    return room_set
     
-def get_potential_obstacles(obstacle_set):
-    return obstacle_set
+## Generate a valid tracery rule defining what a room can be
+def generate_room_rule(room_set):
+    room_rule = []
+    for room in room_set:
+        room_rule.append("(" + room[0] + " " + room[1] + ")")
+        
+    return room_rule
     
 if __name__ == "__main__":
     main()

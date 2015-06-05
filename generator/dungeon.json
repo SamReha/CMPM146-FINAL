@@ -8,11 +8,15 @@
   "end": [
     "(room end)"
   ], 
-  "start": [
-    "(room start)"
+  "room": [
+    "(room keylock)", 
+    "(room maze)", 
+    "(room no_obstacle)"
   ], 
   "middle": [
-    "(room)", 
-    "(room), #middle#"
+    "#room#, #room#, #room#, #room#, #room#, #room#, #room#, #room#, #room#, #room#, #room#, #room#, #room#, #room#, #room#, #room#, #room#, #room#, #room#, #room#, #room#, #room#"
+  ], 
+  "start": [
+    "(room start)"
   ]
 }
