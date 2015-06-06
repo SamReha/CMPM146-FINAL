@@ -11,6 +11,7 @@ import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 
+
 public class Dungeon extends JPanel implements KeyListener {
 	/**
 	 * 
@@ -103,11 +104,14 @@ public class Dungeon extends JPanel implements KeyListener {
         Level middle = generateMiddleLevel();
         world.add(middle);
         System.out.println(start);
+        
+        parseWorld(world);
         placePlayer();
         
-        //if (player.getX() == -1 || player.getY() == -1){
-        //    setPlayerNearestOpen(1, 1);
-        //}
+        /*if (player.getX() == -1 || player.getY() == -1){
+            setPlayerNearestOpen(1, 1);
+            player.setZ(0);
+        }*/
 		
 
 	}
@@ -541,76 +545,6 @@ public class Dungeon extends JPanel implements KeyListener {
         return Math.sqrt(Math.pow((p2.getX() - p1.getX()), 2) + Math.pow((p2.getY() - p1.getY()), 2));
     }
     
-	/*class Point implements Comparable<Point>{
-		int x, y;
-		
-		public Point(int x, int y){
-			this.x = x;
-			this.y = y;
-		}
-		
-		public int getX(){
-			return x;
-		}
-		
-		public int getY(){
-			return y;
-		}
-		
-		public boolean equals(Point p){
-			if (this.x == p.getX() && this.y == p.getY()){
-				return true;
-			}
-			
-			return false;
-		}
-        
-        @Override
-        public int compareTo(Point p){
-            if (this.x == p.x){
-                if (this.y == p.y){
-                    return 0;
-                }
-                
-                else if (this.y < p.y){
-                    return -1;
-                }
-                
-                else {
-                    return 1;
-                }
-            }
-            
-            else {
-                if (this.x < p.x){
-                    return -1;
-                }
-                
-                else {
-                    return 1;
-                }
-            }
-        }
-	}
-	
-	class PriorTuple{
-		Point p;
-		int d;
-		
-		public PriorTuple(int d, Point p){
-			this.d = d;
-			this.p = p;
-		}
-		
-		public int getDist(){
-			return d;
-		}
-		
-		public Point getPoint(){
-			return p;
-		}
-	}*/
-    
     public Level generateTopLevel(){
         int wid = (int) (Math.random() * 100) + 10;
         int hei = (int) (Math.random() * 100) + 10;
@@ -619,6 +553,8 @@ public class Dungeon extends JPanel implements KeyListener {
         System.out.println("player and stairs added");
         newLev.generateWalls();
         System.out.println("walls added");
+        newLev.generateEnemies();
+        System.out.println("skeletrons invading");
         return newLev;
         
     }
@@ -631,7 +567,23 @@ public class Dungeon extends JPanel implements KeyListener {
         System.out.println("player and stairs added");
         newLev.generateWalls();
         System.out.println("walls added");
+        newLev.generateEnemies();
+        System.out.println("skeletrons invading");
         return newLev;
+    }
+    
+    public void parseWorld(ArrayList<Level> levs){
+        for (int z = 0; z < levs.size(); z++){
+            for (int i = 0; i < levs.get(z).getTerrain().size(); i++){
+                String str = levs.get(z).get(i);
+                for (int j = 0; j < str.length(); j++){
+                    if (str.charAt(j) == 's'){
+                        enemies.add(new Enemy("Skeletron", 5, 1, 1, i, j, z, skeleton));
+                    }
+                }
+            }
+        }
+        
     }
 	
 }

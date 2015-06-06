@@ -108,7 +108,7 @@ public class Enemy{
         if (p.getHealth() <= 0){
             p.die();
         }
-        System.out.println(p.getHealth());
+        //System.out.println(p.getHealth());
     }
     
     public void die(){
@@ -120,13 +120,15 @@ public class Enemy{
         
         if (d > 10 || ez != p.getZ())
             return;
+        //System.out.println("I can smell you " + d);
         numMoves += speed;
-        if (d < 2){
+        if (d <= 1){
             attack(p);
             return;
         }
         ArrayList<Point> path = astar(p);
         if (path != null){
+            //System.out.println("I can trace your smell");
             Point point;
             if (path.size() > Math.floor(numMoves)){
                 point = path.get((int) Math.floor(numMoves - 1));
@@ -138,7 +140,7 @@ public class Enemy{
             }
             ex = point.getX();
             ey = point.getY();
-            System.out.println(ex + ", " + ey);
+            //System.out.println(ex + ", " + ey);
         }
         
         if (numMoves >= 1 && distanceTo(p) < 2){
@@ -168,24 +170,26 @@ public class Enemy{
 		pq.add(start);
 		
 		while (pq.size() != 0){
+            //System.out.println(pq.size());
 			PriorTuple curr = pq.poll();
 			
 			if (curr.getPoint().equals(dest)){
-                System.out.println("found");
+                //System.out.println("found");
                 found = true;
 				break;
 			}
 			
 			neighbors = getAdj(curr.getPoint());
+            //System.out.println(neighbors.size());
 			
 			for (PriorTuple neigh : neighbors){
 				int alt = distance.get(curr.getPoint()) + neigh.getDist();
-				if (!distance.containsKey(neigh.getPoint()) /*|| alt < distance.get(neigh.getPoint())*/){
-                    if (distance.containsKey(neigh.getPoint())){
+				if (!distance.containsKey(neigh.getPoint()) || alt < distance.get(neigh.getPoint())){
+                    /*if (distance.containsKey(neigh.getPoint())){
                         System.out.println("(" + neigh.getPoint().getX() + ", " + neigh.getPoint().getY() + ")");
                     System.out.println(alt + " " + distance.get(neigh.getPoint()));
                     System.out.println(alt < distance.get(neigh.getPoint()));
-                    }
+                    }*/
                     
 					distance.put(neigh.getPoint(), alt);
 					PriorTuple newpt = new PriorTuple(alt, neigh.getPoint());
@@ -202,7 +206,7 @@ public class Enemy{
                 path.add(0, point);
                 point = prev.get(point);
             }
-            System.out.println("path found");
+            //System.out.println("path found");
             return path;
         }
         
@@ -210,7 +214,7 @@ public class Enemy{
     }
     
     public boolean emptySpace(char a){
-		if (a == Dungeon.FLOOR || a == Dungeon.STAIRS_DOWN || a == Dungeon.STAIRS_UP){
+		if (a == Dungeon.FLOOR || a == Dungeon.STAIRS_DOWN || a == Dungeon.STAIRS_UP || a == Dungeon.PLAYER || a == Dungeon.SKELETRON || a == Dungeon.WEAPON || a == Dungeon.ARMOR){
 			return true;
 		}
 		
@@ -221,44 +225,33 @@ public class Enemy{
 		ArrayList<PriorTuple> parr = new ArrayList<PriorTuple>();
 		int x = p.getX();
 		int y = p.getY();
-        Player pl = Dungeon.player;
-		try {
-            if (x > 0 && x < Dungeon.worldheight - 1 && emptySpace(Dungeon.world.get(ez).getTerrain().get(x - 1).charAt(y))){
+        //System.out.println(x + ", " + y);
+            
+            if (x > 0 && x < Dungeon.world.get(ez).height - 1){
+                    //System.out.println(emptySpace(Dungeon.world.get(ez).getTerrain().get(x - 1).charAt(y)));
+                if (emptySpace(Dungeon.world.get(ez).get(x-1).charAt(y))){
+                    //System.out.println("found an adjacent tile x - 1");
                     Point newp = new Point(x-1, y);
                     parr.add(new PriorTuple(1, newp));
+                }
+                    
                 
             }
-        } catch (IndexOutOfBoundsException e){
-            
-        }
-		try {
-            if (x < Dungeon.worldheight - 1 && x > 0 && emptySpace(Dungeon.world.get(ez).getTerrain().get(x + 1).charAt(y))){
-                    System.out.println("Not colliding");
+            if (x < Dungeon.world.get(ez).height - 1 && x > 0 && emptySpace(Dungeon.world.get(ez).getTerrain().get(x + 1).charAt(y))){
+                    //System.out.println("found an adjacent tile x + 1");
                     Point newp = new Point(x+1, y);
                     parr.add(new PriorTuple(1, newp));
             }
-        } catch (IndexOutOfBoundsException e){
-            
-        }
-		
-        try{
-            if (y > 0 && y < Dungeon.worldwidth - 1 && emptySpace(Dungeon.world.get(ez).getTerrain().get(x).charAt(y-1))){
+            if (y > 0 && y < Dungeon.world.get(ez).width - 1 && emptySpace(Dungeon.world.get(ez).getTerrain().get(x).charAt(y-1))){
+                //System.out.println("found an adjacent tile y - 1");
                 Point newp = new Point(x, y-1);
                 parr.add(new PriorTuple(1, newp));
             }
-        } catch (IndexOutOfBoundsException e){
-            
-        }
-		
-		try {
-            if (y < Dungeon.worldwidth - 1 && y > 0 && emptySpace(Dungeon.world.get(ez).getTerrain().get(x).charAt(y+1))){
+            if (y < Dungeon.world.get(ez).width - 1 && y > 0 && emptySpace(Dungeon.world.get(ez).getTerrain().get(x).charAt(y+1))){
+                //System.out.println("found an adjacent tile y + 1");
                 Point newp = new Point(x, y+1);
                 parr.add(new PriorTuple(1, newp));
             }
-        } catch (IndexOutOfBoundsException e){
-            
-        }
-		
 		return parr;
 	}
     

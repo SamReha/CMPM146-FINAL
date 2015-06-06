@@ -241,20 +241,27 @@ public class Level {
     
     public void generateWalls(){
         int area = floorspace;
-        int numWalls = (int) ((Math.random() * (area/3)) + area/4);
+        int numWalls = (int) ((Math.random() * (area/2)) + area/4);
         int wallsMade = 0;
-        
-        ArrayList<String> oldTerrain = terrain;
         
         while (wallsMade < numWalls){
             int randx = (int) (Math.random() * (width - 1)) + 1;
             int randy = (int) (Math.random() * (height - 1)) + 1;
             
-            String str = oldTerrain.get(randy);
-            if (str.charAt(randx) != '#' && str.charAt(randx) != '@' && str.charAt(randx) != 'v' && str.charAt(randx) != '^'){
-                oldTerrain.set(randy, replaceIndex(str, randx, '#'));
-                wallsMade++;
-            }
+            int adjWalls = 0;
+            String str = terrain.get(randy);
+                /*ArrayList<Character> adjTiles = getAdjTiles(randx, randy);
+                for (Character c : adjTiles){
+                    if (c == '#'){
+                        adjWalls++;
+                    }
+                        
+                }*/
+                if (str.charAt(randx) == '.' /*&& adjWalls < 2*/){
+                    terrain.set(randy, replaceIndex(str, randx, '#'));
+                    wallsMade++;
+                    //System.out.println((wallsMade*1.0)/(numWalls*1.0) + "%");
+                }
         }
         
         while (!pathFromTo(startx, starty, endx, endy)){
@@ -270,11 +277,35 @@ public class Level {
                 int randx = (int) (Math.random() * (width - 1)) + 1;
                 int randy = (int) (Math.random() * (height - 1)) + 1;
                 
+                int adjWalls = 0;
                 String str = terrain.get(randy);
-                if (str.charAt(randx) != '#' && str.charAt(randx) != '@' && str.charAt(randx) != 'v' && str.charAt(randx) != '^'){
+                /*ArrayList<Character> adjTiles = getAdjTiles(randx, randy);
+                for (Character c : adjTiles){
+                    if (c == '#'){
+                        adjWalls++;
+                    }
+                }*/
+                if (str.charAt(randx) == '.' /*&& adjWalls >= 1*/){
                     terrain.set(randy, replaceIndex(str, randx, '#'));
                     wallsMade++;
+                    //System.out.println((wallsMade*1.0)/(numWalls*1.0) + "%");
                 }
+            }
+        }
+    }
+    
+    public void generateEnemies(){
+        int numEnemies = (int) (Math.random() * 10) + 1;
+        int enemiesPlaced = 0;
+        
+        while (enemiesPlaced < numEnemies){
+            int randx = (int) (Math.random() * (width - 1)) + 1;
+            int randy = (int) (Math.random() * (height - 1)) + 1;
+            
+            String str = terrain.get(randy);
+            if (str.charAt(randx) == '.'){
+                terrain.set(randy, replaceIndex(str, randx, 's'));
+                enemiesPlaced++;
             }
         }
     }
@@ -378,6 +409,25 @@ public class Level {
             }
 		
 		return parr;
+	}
+    
+    public ArrayList<Character> getAdjTiles(int y, int x){
+		ArrayList<Character> tiles = new ArrayList<Character>();
+            if (x > 0 && x < height - 1){
+                    tiles.add(terrain.get(x-1).charAt(y));
+                
+            }
+            if (x < height - 1 && x > 0){
+                    tiles.add(terrain.get(x+1).charAt(y));
+            }
+            if (y > 0 && y < width - 1){
+                tiles.add(terrain.get(x).charAt(y-1));
+            }
+            if (y < width - 1 && y > 0){
+                tiles.add(terrain.get(x).charAt(y+1));
+            }
+		
+		return tiles;
 	}
     
     public boolean emptySpace(char a){

@@ -9,7 +9,7 @@ public class Frame extends JFrame {
 	
 	public static void main(String[] args){
 		String file = args[0];
-		JFrame frame = new JFrame("Roag");
+		JFrame frame = new JFrame("Tears of the Mantis: Roag Colon:");
 		frame.add(new Dungeon(file));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(width,height);
