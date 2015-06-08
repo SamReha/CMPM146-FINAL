@@ -38,9 +38,9 @@ def main():
 
     # Use atoms to generate a Tracery grammar with semi-random properties
     print "Generating grammar..."
-    grammar = dict(end = ["(room end)"],
+    grammar = dict(end = ["(end)"],
                    middle = ["(room)", "(room), #middle#"],
-                   start = ["(room start)"],
+                   start = ["(start)"],
                    dungeon = ["#start#, #middle#, #end#"],
                    origin = ["#dungeon#"]
                   )
