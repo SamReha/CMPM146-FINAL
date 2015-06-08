@@ -57,7 +57,7 @@ def main():
     grammar["obstacle"] = generate_obstacle_rule(obstacles)
     grammar["pickup"] = generate_pickup_rule(pickups)
     grammar["enemy"] = generate_enemy_rule(enemies)
-    grammar["random"] = generate_number_series_rule(randint(0, 20))
+    grammar["random"] = generate_number_series_rule(randint(1, 20))
 
     # Flip a coin to determine if we're getting fixed length or non-fixed length dungeon grammars
     if (randint(0, 1) is 1) or settings['always_fixed_length']:
@@ -170,7 +170,7 @@ def generate_enemy_rule(enemy_set):
     return enemy_rule
     
 def generate_number_series_rule(int):
-    series_rule = ["0"]
+    series_rule = []
     for i in range(1, int):
         series_rule.append(str(i))
     return series_rule
