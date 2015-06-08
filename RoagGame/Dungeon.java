@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.awt.Color;
 
 
 public class Dungeon extends JPanel implements KeyListener {
@@ -26,6 +27,7 @@ public class Dungeon extends JPanel implements KeyListener {
      static final char EMPTY = ' ';
      static final char ARMOR = 'a';
      static final char WEAPON = 'w';
+     static final char AMULET = 'g';
 	 
 	private static final long serialVersionUID = 7547983272105812599L;
     static Image floor;
@@ -41,7 +43,8 @@ public class Dungeon extends JPanel implements KeyListener {
     static Image metalbreastplate;
     static Image greendress;
     static Image redhair;
-	static boolean game = true;
+    static Image amulet;
+	static boolean win = false;
 	static int worldwidth = 0;
     static int worldheight = 0;
 	static ArrayList<Level> world = new ArrayList<Level>();
@@ -81,6 +84,7 @@ public class Dungeon extends JPanel implements KeyListener {
         ImageIcon mbs = new ImageIcon("sprites\\bplate_metal1.png");
         ImageIcon gd = new ImageIcon("sprites\\dress_green.png");
         ImageIcon rh = new ImageIcon("sprites\\fem_red.png");
+        ImageIcon am = new ImageIcon("sprites\\stone3_magenta.png");
         playerImg = pl.getImage();
         floor = fl.getImage();
         wall = wa.getImage();
@@ -94,16 +98,19 @@ public class Dungeon extends JPanel implements KeyListener {
         metalbreastplate = mbs.getImage();
         greendress = gd.getImage();
         redhair = rh.getImage();
+        amulet = am.getImage();
         enemies = new ArrayList<Enemy>();
         armor = new ArrayList<Armor>();
         weapons = new ArrayList<Weapon>();
         player = new Player(10, 1, null, new Armor("Green Dress", "Chest", 0, -1, -1, -1, greendress), redhair);
 		//loadDungeon(file);
-        Level start = generateTopLevel();
+        /*Level start = generateTopLevel();
         world.add(start);
         Level middle = generateMiddleLevel();
         world.add(middle);
-        System.out.println(start);
+        System.out.println(start);*/
+        
+        readTrace("trace.txt");
         
         parseWorld(world);
         placePlayer();
@@ -115,6 +122,18 @@ public class Dungeon extends JPanel implements KeyListener {
 		
 
 	}
+    
+    public void restart(){
+        enemies = new ArrayList<Enemy>();
+        armor = new ArrayList<Armor>();
+        weapons = new ArrayList<Weapon>();
+        win = false;
+        player = new Player(10, 1, null, new Armor("Green Dress", "Chest", 0, -1, -1, -1, greendress), redhair);
+        readTrace("trace.txt");
+        
+        parseWorld(world);
+        placePlayer();
+    }
     
     public void placePlayer(){
         for (int i = 0; i < world.size(); i++){
@@ -165,6 +184,10 @@ public class Dungeon extends JPanel implements KeyListener {
                         else if (a == SKELETRON || a == ARMOR || a == WEAPON || a == PLAYER){
                             g2d.drawImage(floor, lineNum * 32, xNum * 32, null);
                         }
+                        else if (a == AMULET){
+                            g2d.drawImage(floor, lineNum * 32, xNum * 32, null);
+                            g2d.drawImage(amulet, lineNum * 32, xNum * 32, null);
+                        }
                         else {
                             g2d.drawImage(empty, lineNum * 32, xNum * 32, null);
                         }
@@ -210,6 +233,26 @@ public class Dungeon extends JPanel implements KeyListener {
 			} 
             lineNum++;
 		}
+        
+        g2d.setColor(Color.WHITE);
+        g2d.setFont(new Font("TimesRoman", Font.BOLD, 16));
+        g2d.drawString("Health: " + player.getHealth() + "/" + player.getMaxHealth(), 50, 50);
+        
+        if (player.getHealth() <= 0){
+            g2d.setColor(Color.RED);
+            g2d.setFont(new Font("TimesRoman", Font.BOLD, 72));
+            g2d.drawString("You died", 300, 400);
+            g2d.setFont(new Font("TimesRoman", Font.PLAIN, 24));
+            g2d.drawString("Press R to restart", 300, 450);
+        }
+        if (win){
+            g2d.setColor(Color.BLUE);
+            g2d.setFont(new Font("TimesRoman", Font.BOLD, 72));
+            g2d.drawString("You win!", 300, 400);
+            
+            g2d.setFont(new Font("TimesRoman", Font.PLAIN, 24));
+            g2d.drawString("Press R to restart", 300, 450);
+        }
 	}
 	
 	public static void loadDungeon(String file){
@@ -300,62 +343,49 @@ public class Dungeon extends JPanel implements KeyListener {
 	}
 
 	public void keyPressed(KeyEvent e){
-        boolean causesEnemyAction = false;
-		//System.out.println("key");
-		//System.out.println(e.getKeyCode());
-		int id = e.getKeyCode();
-		if (id == KeyEvent.VK_UP){
-            causesEnemyAction = true;
-			movePlayer(0, -1);
-			playerdirection = "up";
-		} else if (id == KeyEvent.VK_DOWN){
-            causesEnemyAction = true;
-			movePlayer(0, 1);
-			playerdirection = "down";
-		} else if (id == KeyEvent.VK_LEFT){
-            causesEnemyAction = true;
-			movePlayer(-1, 0);
-			playerdirection = "left";
-		} else if (id == KeyEvent.VK_RIGHT){
-            causesEnemyAction = true;
-			movePlayer(1, 0);
-			playerdirection = "right";
-		} else if (id == KeyEvent.VK_SPACE){
-            causesEnemyAction = true;
-			performAction(player.getX(), player.getY());
-		}
-        
-        if (causesEnemyAction){
-            for (int i = 0; i < enemies.size(); i++){
-                if (enemies.get(i).dead()){
-                    enemies.remove(i);
-                }
+        int id = e.getKeyCode();
+        if (player.getHealth() > 0 && !win){
+            boolean causesEnemyAction = false;
+            if (id == KeyEvent.VK_UP){
+                causesEnemyAction = true;
+                movePlayer(0, -1);
+                playerdirection = "up";
+            } else if (id == KeyEvent.VK_DOWN){
+                causesEnemyAction = true;
+                movePlayer(0, 1);
+                playerdirection = "down";
+            } else if (id == KeyEvent.VK_LEFT){
+                causesEnemyAction = true;
+                movePlayer(-1, 0);
+                playerdirection = "left";
+            } else if (id == KeyEvent.VK_RIGHT){
+                causesEnemyAction = true;
+                movePlayer(1, 0);
+                playerdirection = "right";
+            } else if (id == KeyEvent.VK_SPACE){
+                causesEnemyAction = true;
+                performAction(player.getX(), player.getY());
             }
-            for (Enemy en : enemies){
-                en.act(player);
+        
+            if (causesEnemyAction){
+                for (int i = 0; i < enemies.size(); i++){
+                    if (enemies.get(i).dead()){
+                        enemies.remove(i);
+                    }
+                }
+                for (Enemy en : enemies){
+                    en.act(player);
+                }
             }
         }
         
+        if (id == KeyEvent.VK_R){
+            restart();
+            repaint();
+        }
+        
+        
 	}
-	
-	/*public void doAction(){
-		int newx = 0, newy = 0;
-		if (playerdirection.equals("up")){
-			newx = player.getX();
-			newy = player.getY() - 1;
-		} else if (playerdirection.equals("down")){
-			newx = player.getX();
-			newy = player.getY() + 1;
-		} else if (playerdirection.equals("left")){
-			newx = player.getX() - 1;
-			newy = player.getY();
-		} else if (playerdirection.equals("right")){
-			newx = player.getX() + 1;
-			newy = player.getY();
-		}
-		
-		performAction(newx, newy);
-	}*/
     
     public Enemy enemyAt(int x, int y){
         for (Enemy e : enemies){
@@ -413,6 +443,10 @@ public class Dungeon extends JPanel implements KeyListener {
                 player.setX(x);
                 player.setY(y);
             }
+        }
+        
+        else if (a == AMULET){
+            win = true;
         }
         
         for (int i = 0; i < armor.size(); i++){
@@ -490,7 +524,7 @@ public class Dungeon extends JPanel implements KeyListener {
     }
     
     public boolean walkable(char a){
-        if (a == FLOOR || a == SKELETRON || a == STAIRS_UP || a == STAIRS_DOWN || a == ARMOR || a == WEAPON || a == PLAYER){
+        if (a == FLOOR || a == SKELETRON || a == STAIRS_UP || a == STAIRS_DOWN || a == ARMOR || a == WEAPON || a == PLAYER || a == AMULET){
             return true;
         }
         
@@ -545,7 +579,7 @@ public class Dungeon extends JPanel implements KeyListener {
         return Math.sqrt(Math.pow((p2.getX() - p1.getX()), 2) + Math.pow((p2.getY() - p1.getY()), 2));
     }
     
-    public Level generateTopLevel(){
+    public Level generateStart(){
         int wid = (int) (Math.random() * 100) + 10;
         int hei = (int) (Math.random() * 100) + 10;
         Level newLev = new Level(wid, hei);
@@ -559,14 +593,50 @@ public class Dungeon extends JPanel implements KeyListener {
         
     }
     
-    public Level generateMiddleLevel(){
-        int wid = (int) (Math.random() * 100) + 10;
-        int hei = (int) (Math.random() * 100) + 10;
+    public Level generateKeyLock(){
+        int wid = (int) (Math.random() * 50) + 10;
+        int hei = (int) (Math.random() * 50) + 10;
         Level newLev = new Level(wid, hei);
         newLev.generateStairs();
-        System.out.println("player and stairs added");
         newLev.generateWalls();
-        System.out.println("walls added");
+        newLev.generateEnemies();
+        return newLev;
+    }
+    
+    public Level generateMaze(){
+        int wid = (int) (Math.random() * 50) + 50;
+        int hei = (int) (Math.random() * 50) + 50;
+        Level newLev = new Level(wid, hei);
+        newLev.generateStairs();
+        System.out.println("stairs added");
+        newLev.generateWalls();
+        System.out.println("maze walls added");
+        newLev.generateEnemies();
+        System.out.println("skeletrons invading");
+        return newLev;
+    }
+    
+    public Level generateMiddleLevelNoObstacles(){
+        int wid = (int) (Math.random() * 30) + 10;
+        int hei = (int) (Math.random() * 30) + 10;
+        Level newLev = new Level(wid, hei);
+        newLev.generateStairsNoObstacles();
+        System.out.println("stairs added");
+        newLev.generateWallsNoObstacles();
+        System.out.println("no obstacle walls added");
+        newLev.generateEnemies();
+        System.out.println("skeletrons invading");
+        return newLev;
+    }
+    
+    public Level generateEnd(){
+        int wid = (int) (Math.random() * 50) + 50;
+        int hei = (int) (Math.random() * 50) + 50;
+        Level newLev = new Level(wid, hei);
+        newLev.generateStairsAndEnd();
+        System.out.println("stairs and gems added");
+        newLev.generateWalls();
+        System.out.println("maze walls added");
         newLev.generateEnemies();
         System.out.println("skeletrons invading");
         return newLev;
@@ -584,6 +654,45 @@ public class Dungeon extends JPanel implements KeyListener {
             }
         }
         
+    }
+    
+    public void readTrace(String fn){
+        String filename;
+    try {
+      filename = fn;
+      ReadFile file = new ReadFile(filename);
+      String[] Trace = file.OpenFile();
+      for (int i = 0; i < Trace.length; i++){
+        //System.out.println(Trace[i]);
+        String type = Trace[i];
+        switch (type) {
+          case "room start" : // build room, place player
+                              System.out.println("Start");
+                              world.add(generateStart());
+                              break;
+          case "room keylock" : //build room, place door, place key
+                                System.out.println("keylock");
+                                world.add(generateKeyLock());
+                                break;
+          case "room maze" : //build room, place maze
+                             System.out.println("maze");
+                             world.add(generateMaze());  
+                             break;
+          case "room no_obstacle" : //build room
+                                    System.out.println("no obstacle");
+                                    world.add(generateMiddleLevelNoObstacles());
+                                    break;
+          case "room end" : //build room
+                            System.out.println("End");
+                            world.add(generateEnd());
+                            break;
+        }
+      } 
+    } catch(ArrayIndexOutOfBoundsException e) {
+      System.err.println("No File");
+    } catch(IOException e) {
+      System.err.println(e.getMessage());
+    }
     }
 	
 }

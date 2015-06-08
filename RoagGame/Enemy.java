@@ -128,21 +128,24 @@ public class Enemy{
         }
         while (numMoves >= 1){
             ArrayList<Point> path = astar(p);
-        if (path != null){
-            //System.out.println("I can trace your smell");
-            Point point;
-            if (path.size() > Math.floor(numMoves)){
-                point = path.get((int) Math.floor(numMoves - 1));
-                numMoves -= (int) Math.floor(numMoves);
+            if (path != null && path.size() != 0){
+                //System.out.println("I can trace your smell");
+                Point point;
+                if (path.size() > Math.floor(numMoves)){
+                    point = path.get((int) Math.floor(numMoves - 1));
+                    numMoves -= (int) Math.floor(numMoves);
+                }
+                else {
+                    point = path.get(path.size() - 1);
+                    numMoves -= path.size();
+                }
+                ex = point.getX();
+                ey = point.getY();
+                //System.out.println(ex + ", " + ey);
             }
-            else {
-                point = path.get(path.size() - 1);
-                numMoves -= path.size();
+            else{
+                break;
             }
-            ex = point.getX();
-            ey = point.getY();
-            //System.out.println(ex + ", " + ey);
-        }
         }
         
         

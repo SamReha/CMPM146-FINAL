@@ -53,6 +53,10 @@ public class Player {
         return hair;
     }
     
+    public int getMaxHealth(){
+        return maxHealth;
+    }
+    
     public void setHealth(int h){
         health = h;
     }
@@ -79,6 +83,10 @@ public class Player {
     
     public void setHair(Image h){
         hair = h;
+    }
+    
+    public void setMaxHealth(int mh){
+        maxHealth = mh;
     }
     
     public void attack(Enemy e){
