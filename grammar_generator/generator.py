@@ -64,7 +64,7 @@ def main():
         if settings['always_fixed_length']:
             dungeon_length = settings['fixed_length'] - 1
         else:
-            dungeon_length = randint(0, 99)
+            dungeon_length = randint(0, 19)
             
         middle_rule_string = "#room#"
         for i in range(0, dungeon_length):
@@ -72,7 +72,16 @@ def main():
             
         grammar['middle'] = [middle_rule_string]
     else:   # Make a grammar capable of generating dungeons of varying lengths
-        grammar['middle'] = ["#room#", "#room#, #middle#"]  # Placeholder!
+        # grammar['middle'] = ["#room#", "#room#, #middle#"]  # Placeholder!
+        # Roll for likelyhood of termination
+        term_chance = randint(1, 10)
+        grammar['middle'] = []
+        for i in range(0, 10):
+            if term_chance > 0:
+                grammar['middle'].append("#room#")
+                term_chance -= 1
+            else:
+                grammar['middle'].append("#room#, #middle#")
     
     print "Grammar Generated successfully!"
 
