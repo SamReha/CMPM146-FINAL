@@ -180,7 +180,7 @@ def generate_enemy_rule(enemy_set):
     
 def generate_number_series_rule(int):
     series_rule = []
-    for i in range(1, int):
+    for i in range(1, int+1):
         series_rule.append(str(i))
     return series_rule
     
