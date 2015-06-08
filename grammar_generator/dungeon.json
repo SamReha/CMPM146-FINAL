@@ -6,11 +6,10 @@
     "#start#, #middle#, #end#"
   ], 
   "end": [
-    "(room end)"
+    "(end)"
   ], 
   "room": [
     "(room keylock)", 
-    "(room maze)", 
     "(room no_obstacle)"
   ], 
   "middle": [
@@ -18,6 +17,6 @@
     "#room#, #middle#"
   ], 
   "start": [
-    "(room start)"
+    "(start)"
   ]
 }
