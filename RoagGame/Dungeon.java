@@ -260,7 +260,7 @@ public class Dungeon extends JPanel implements KeyListener {
                 for (int j = 0; j < line.length(); j++){
                     char a = line.charAt(j);
                     if (a == SKELETRON){
-                        enemies.add(new Enemy("Skeletron", 5, 1, 1, xpos, j, zlev, skeleton));
+                        enemies.add(new Enemy("Skeletron", 5, 1, .5f, xpos, j, zlev, skeleton));
                     } else if (a == PLAYER){
                         player.setX(xpos);
                         player.setY(j);
@@ -578,7 +578,7 @@ public class Dungeon extends JPanel implements KeyListener {
                 String str = levs.get(z).get(i);
                 for (int j = 0; j < str.length(); j++){
                     if (str.charAt(j) == 's'){
-                        enemies.add(new Enemy("Skeletron", 5, 1, 1, i, j, z, skeleton));
+                        enemies.add(new Enemy("Skeletron", 5, 1, .5f, i, j, z, skeleton));
                     }
                 }
             }

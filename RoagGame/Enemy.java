@@ -126,7 +126,8 @@ public class Enemy{
             attack(p);
             return;
         }
-        ArrayList<Point> path = astar(p);
+        while (numMoves >= 1){
+            ArrayList<Point> path = astar(p);
         if (path != null){
             //System.out.println("I can trace your smell");
             Point point;
@@ -142,6 +143,8 @@ public class Enemy{
             ey = point.getY();
             //System.out.println(ex + ", " + ey);
         }
+        }
+        
         
         if (numMoves >= 1 && distanceTo(p) < 2){
             attack(p);

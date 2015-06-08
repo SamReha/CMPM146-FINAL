@@ -14,7 +14,8 @@
     "(room no_obstacle)"
   ], 
   "middle": [
-    "#room#, #room#, #room#, #room#, #room#, #room#, #room#, #room#, #room#, #room#, #room#, #room#, #room#, #room#, #room#, #room#, #room#, #room#, #room#, #room#, #room#, #room#"
+    "#room#", 
+    "#room#, #middle#"
   ], 
   "start": [
     "(room start)"
