@@ -38,9 +38,10 @@ def main():
 
     # Use atoms to generate a Tracery grammar with semi-random properties
     print "Generating grammar..."
-    grammar = dict(end = ["(end)"],
-                   middle = ["(room)", "(room), #middle#"],
-                   start = ["(start)"],
+    grammar = dict(end = ["(end #obstacle# #enemy# #pickup#)"],
+                   middle = ["#room#", "#room#, #middle#"],
+                   room = ["(#type# #obstacle# #enemy# #pickup#)"],
+                   start = ["(start #obstacle# #enemy# #pickup#)"],
                    dungeon = ["#start#, #middle#, #end#"],
                    origin = ["#dungeon#"]
                   )
@@ -51,9 +52,11 @@ def main():
         pickups = random_reduce(pickups)
         obstacles = random_reduce(obstacles)
 
-    # From the available set of floors and obstacles, figure out all possible combinations and add them to the grammar as a "r
-    floor_types = get_room_types(floors, obstacles)
-    grammar["room"] = generate_room_rule(floor_types)
+    # Write rules for types, obstacles, enemies and pickups
+    grammar["type"] = generate_type_rule(floors)
+    grammar["obstacle"] = generate_obstacle_rule(obstacles)
+    grammar["pickup"] = generate_pickup_rule(pickups)
+    grammar["enemy"] = generate_enemy_rule(enemies)
 
     # Flip a coin to determine if we're getting fixed length or non-fixed length dungeon grammars
     if (randint(0, 1) is 1) or settings['always_fixed_length']:
@@ -117,32 +120,54 @@ def save_dungeon(dungeon_trace, path_to_dungeon, override_status):
 ## Randomly filter out some atoms with no heuristic
 def random_reduce(atom_set):
     reduced_set = list(atom_set)
-    if len(atom_set) > 1:
-        # Roll to see how many will get excluded (but be sure to leave at LEAST one atom!)
-        numToKill = randint(0, len(atom_set)-1)
-        while numToKill > 0:
-            random_index = randint(0, len(reduced_set)-1)
-            reduced_set.pop(random_index)
-            numToKill -= 1
+    # Roll to see how many will get excluded (but be sure to leave at LEAST one atom!)
+    numToKill = randint(0, len(atom_set)-1)
+    while numToKill > 0:
+        random_index = randint(0, len(reduced_set)-1)
+        reduced_set.pop(random_index)
+        numToKill -= 1
     
     return reduced_set
     
 ## Returns a list of rooms types defined as (floor_type, obstacle_type) tuples
-def get_room_types(floor_set, obstacle_set):
-    room_set = []
-    obstacle_set.append(dict(type="no_obstacle"))
-    for floor in floor_set:
-        for obstacle in obstacle_set:
-            room_set.append((floor['type'], obstacle['type']))
-    return room_set
+#def get_room_types(floor_set, obstacle_set):
+#    room_set = []
+#    obstacle_set.append(dict(type="no_obstacle"))
+#    for floor in floor_set:
+#        for obstacle in obstacle_set:
+#            room_set.append((floor['type'], obstacle['type']))
+#    return room_set
     
 ## Generate a valid tracery rule defining what a room can be
-def generate_room_rule(room_set):
-    room_rule = []
-    for room in room_set:
-        room_rule.append("(" + room[0] + " " + room[1] + ")")
-        
-    return room_rule
+#def generate_room_rule(room_set):
+#    room_rule = "(#type# #obstacle# #enemy# #pickup#)"
+#        
+#    return room_rule
+
+def generate_type_rule(type_set):
+    type_rule = []
+    for type in type_set:
+        type_rule.append(type['type'])
+    return type_rule
+    
+def generate_obstacle_rule(obstacle_set):
+    obstacle_rule = ["no_obstacle"]
+    for obstacle in obstacle_set:
+        obstacle_rule.append(obstacle['type'])
+    return obstacle_rule
+    
+def generate_pickup_rule(pickup_set):
+    pickup_rule = ["no_pickup"]
+    for pickup in pickup_set:
+        pickup_rule.append(pickup['type'] + ":" + randint(1, 21))
+    return pickup_rule
+      
+def generate_enemy_rule(enemy_set):
+    enemy_rule = ["no_enemy"]
+    for enemy in enemy_set:
+        enemy_rule.append(enemy['type'] + ":" + randint(1, 21))
+    return enemy_rule
+    
     
 if __name__ == "__main__":
     main()
