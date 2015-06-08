@@ -3,7 +3,7 @@
 var fs = require('fs');
 
 // GET DUNGEON.JSON
-fs.readFile('dungeon.json', 'utf8', function (err,data) {
+fs.readFile('../grammar_generator/dungeon.json', 'utf8', function (err,data) {
     var dungeon = "";
     if (err) {
         console.log("ERROR! I couldn't open the dungeon file!");
@@ -12,7 +12,6 @@ fs.readFile('dungeon.json', 'utf8', function (err,data) {
         dungeon = data;
         //var grammar = tracery.createGrammar(JSON.parse(dungeon));
         //var example = grammar.flatten('#origin#');
-        
         var dummy_output = [
             "(start), (room keylock), (room keylock), (room no_obstacle), (room no_obstacle), (room no_obstacle), (room no_obstacle), (end)",
             "(start), (room keylock), (room keylock), (room keylock), (end)",
@@ -22,7 +21,12 @@ fs.readFile('dungeon.json', 'utf8', function (err,data) {
         ];
         
         var random_index = Math.floor((Math.random()*dummy_output.length));
-
-        console.log(dummy_output[random_index]);
+        
+        fs.writeFile("trace.txt", dummy_output[random_index], function(err) {
+            if(err) {
+                return console.log(err);
+            }
+            console.log("Trace written to trace.txt");
+        }); 
     }
 });

@@ -1,1 +1,1 @@
-(room start), (room no_obstacle), (room maze), (room maze), (room end)
+(start), (room no_obstacle), (room no_obstacle), (room no_obstacle), (end)
