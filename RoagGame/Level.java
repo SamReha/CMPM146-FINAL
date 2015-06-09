@@ -15,11 +15,11 @@ public class Level {
 
     @Override
     public int compare(PriorTuple o1, PriorTuple o2){
-		int x = o1.getDist();
-		int y = o2.getDist();
-		if (x < y) return -1;
-		if (x > y) return 1;
-		return 0;
+        int x = o1.getDist();
+        int y = o2.getDist();
+        if (x < y) return -1;
+        if (x > y) return 1;
+        return 0;
     }
 };
     
@@ -755,53 +755,53 @@ public class Level {
     }
     
     public boolean pathFromTo(int x, int y, int x2, int y2){
-		TreeMap<Point, Integer> distance = new TreeMap<Point, Integer>();
-		TreeMap<Point, Point> prev = new TreeMap<Point, Point>();
-		Point source = new Point(x, y);
-		Point dest = new Point(x2, y2);
-		prev.put(source, null);
-		distance.put(source, 0);
-		PriorTuple start = new PriorTuple(0, source);
-		PriorityQueue<PriorTuple> pq = new PriorityQueue<PriorTuple>(comparator);
+        TreeMap<Point, Integer> distance = new TreeMap<Point, Integer>();
+        TreeMap<Point, Point> prev = new TreeMap<Point, Point>();
+        Point source = new Point(x, y);
+        Point dest = new Point(x2, y2);
+        prev.put(source, null);
+        distance.put(source, 0);
+        PriorTuple start = new PriorTuple(0, source);
+        PriorityQueue<PriorTuple> pq = new PriorityQueue<PriorTuple>(comparator);
         ArrayList<PriorTuple> neighbors = null;
-		
-		pq.add(start);
-		
-		while (pq.size() != 0){
-			PriorTuple curr = pq.poll();
-			
-			if (curr.getPoint().equals(dest)){
-				return true;
-			}
-			
-			neighbors = getAdj(curr.getPoint());
-			
-			for (PriorTuple neigh : neighbors){
-				int alt = distance.get(curr.getPoint()) + neigh.getDist();
-				if (!distance.containsKey(neigh.getPoint()) || alt < distance.get(neigh.getPoint())){
-					distance.put(neigh.getPoint(), alt);
-					PriorTuple newpt = new PriorTuple(alt, neigh.getPoint());
-					prev.put(neigh.getPoint(), curr.getPoint());
+        
+        pq.add(start);
+        
+        while (pq.size() != 0){
+            PriorTuple curr = pq.poll();
+            
+            if (curr.getPoint().equals(dest)){
+                return true;
+            }
+            
+            neighbors = getAdj(curr.getPoint());
+            
+            for (PriorTuple neigh : neighbors){
+                int alt = distance.get(curr.getPoint()) + neigh.getDist();
+                if (!distance.containsKey(neigh.getPoint()) || alt < distance.get(neigh.getPoint())){
+                    distance.put(neigh.getPoint(), alt);
+                    PriorTuple newpt = new PriorTuple(alt, neigh.getPoint());
+                    prev.put(neigh.getPoint(), curr.getPoint());
                     pq.add(newpt);
-				}
-			}
-		}
-		
-		return false;
-	}
+                }
+            }
+        }
+        
+        return false;
+    }
     
     public ArrayList<PriorTuple> getAdj(Point p){
-		ArrayList<PriorTuple> parr = new ArrayList<PriorTuple>();
-		int x = p.getX();
-		int y = p.getY();
+        ArrayList<PriorTuple> parr = new ArrayList<PriorTuple>();
+        int x = p.getX();
+        int y = p.getY();
             if (x > 0 && x < height - 1 && emptySpace(terrain.get(x - 1).charAt(y))){
-                    Point newp = new Point(x-1, y);
-                    parr.add(new PriorTuple(1, newp));
+                Point newp = new Point(x-1, y);
+                parr.add(new PriorTuple(1, newp));
                 
             }
             if (x < height - 1 && x > 0 && emptySpace(terrain.get(x + 1).charAt(y))){
-                    Point newp = new Point(x+1, y);
-                    parr.add(new PriorTuple(1, newp));
+                Point newp = new Point(x+1, y);
+                parr.add(new PriorTuple(1, newp));
             }
             if (y > 0 && y < width - 1 && emptySpace(terrain.get(x).charAt(y-1))){
                 Point newp = new Point(x, y-1);
@@ -811,18 +811,18 @@ public class Level {
                 Point newp = new Point(x, y+1);
                 parr.add(new PriorTuple(1, newp));
             }
-		
-		return parr;
-	}
+        
+        return parr;
+    }
     
     public ArrayList<Character> getAdjTiles(int y, int x){
-		ArrayList<Character> tiles = new ArrayList<Character>();
+        ArrayList<Character> tiles = new ArrayList<Character>();
             if (x > 0 && x < height - 1){
-                    tiles.add(terrain.get(x-1).charAt(y));
+                tiles.add(terrain.get(x-1).charAt(y));
                 
             }
             if (x < height - 1 && x > 0){
-                    tiles.add(terrain.get(x+1).charAt(y));
+                tiles.add(terrain.get(x+1).charAt(y));
             }
             if (y > 0 && y < width - 1){
                 tiles.add(terrain.get(x).charAt(y-1));
@@ -830,17 +830,17 @@ public class Level {
             if (y < width - 1 && y > 0){
                 tiles.add(terrain.get(x).charAt(y+1));
             }
-		
-		return tiles;
-	}
+        
+        return tiles;
+    }
     
     public boolean emptySpace(char a){
-		if (a != Dungeon.WALL){
-			return true;
-		}
-		
-		return false;
-	}
+        if (a != Dungeon.WALL){
+            return true;
+        }
+        
+        return false;
+    }
     
     public void removeWalls(ArrayList<String> a){
         for (int i = 1; i < a.size() - 1; i++){
