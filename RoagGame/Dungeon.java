@@ -47,6 +47,7 @@ public class Dungeon extends JPanel implements KeyListener {
     static Image greendress;
     static Image redhair;
     static Image amulet;
+    static Image chest;
 	static boolean win = false;
 	static int worldwidth = 0;
     static int worldheight = 0;
@@ -88,6 +89,7 @@ public class Dungeon extends JPanel implements KeyListener {
         ImageIcon gd = new ImageIcon("sprites\\dress_green.png");
         ImageIcon rh = new ImageIcon("sprites\\fem_red.png");
         ImageIcon am = new ImageIcon("sprites\\stone3_magenta.png");
+        ImageIcon ch = new ImageIcon("sprites\\chest.png");
         playerImg = pl.getImage();
         floor = fl.getImage();
         wall = wa.getImage();
@@ -102,6 +104,7 @@ public class Dungeon extends JPanel implements KeyListener {
         greendress = gd.getImage();
         redhair = rh.getImage();
         amulet = am.getImage();
+        chest = ch.getImage();
         enemies = new ArrayList<Enemy>();
         armor = new ArrayList<Armor>();
         weapons = new ArrayList<Weapon>();
@@ -190,6 +193,10 @@ public class Dungeon extends JPanel implements KeyListener {
                         else if (a == AMULET){
                             g2d.drawImage(floor, lineNum * 32, xNum * 32, null);
                             g2d.drawImage(amulet, lineNum * 32, xNum * 32, null);
+                        }
+                        else if (a == CHEST){
+                            g2d.drawImage(floor, lineNum * 32, xNum * 32, null);
+                            g2d.drawImage(chest, lineNum * 32, xNum * 32, null);
                         }
                         else {
                             g2d.drawImage(empty, lineNum * 32, xNum * 32, null);
@@ -652,6 +659,12 @@ public class Dungeon extends JPanel implements KeyListener {
                 for (int j = 0; j < str.length(); j++){
                     if (str.charAt(j) == 's'){
                         enemies.add(new Enemy("Skeletron", 5, 1, .5f, i, j, z, skeleton));
+                    }
+                    else if (str.charAt(j) == 'a'){
+                        armor.add(new Armor("Animal Skin", "Chest", 1, i, j, z, animalskin));
+                    }
+                    else if (str.charAt(j) == 'w'){
+                        weapons.add(new Weapon("Evening Star", 1, i, j, z, geveningstar, weveningstar));
                     }
                 }
             }

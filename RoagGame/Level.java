@@ -708,7 +708,7 @@ public class Level {
             
             String str = terrain.get(randy);
             if (str.charAt(randx) == '.'){
-                terrain.set(randy, replaceIndex(str, randx, 'a'));
+                terrain.set(randy, replaceIndex(str, randx, 'w'));
                 weaponsPlaced++;
             }
         }
