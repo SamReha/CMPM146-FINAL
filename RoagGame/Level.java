@@ -218,6 +218,62 @@ public class Level {
         
     }
     
+    public void generatePlayerAndStairsNoObstacles(){
+        //System.out.println("****************");
+        //System.out.println("Generating Stairs");
+        //System.out.println("****************");
+        int playerx = (int) (Math.random() * (width - 5)) + 5;
+        int playery = (int) (Math.random() * (height - 5)) + 5;
+        int stairdownx = (int) (Math.random() * (width - 5)) + 5;
+        int stairdowny = (int) (Math.random() * (height - 5)) + 5;
+        
+        while (Math.sqrt(Math.pow((playerx-stairdownx), 2) + Math.pow((playery-stairdowny), 2)) < Math.max(width, height)/2 || (playerx >= width - 1 || playery >= height - 1 || stairdownx >= width -1 || stairdowny >= height - 1)){
+            //System.out.println("invalid distance");
+            playerx = (int) (Math.random() * (width - 5)) + 5;
+            playery = (int) (Math.random() * (height - 5)) + 5;
+            stairdownx = (int) (Math.random() * (width - 5)) + 5;
+            stairdowny = (int) (Math.random() * (height - 5)) + 5;
+        }
+        
+        String str = terrain.get(playery);
+        terrain.set(playery, replaceIndex(str, playerx, '^'));
+        startx = playery;
+        starty = playerx;
+        
+        str = terrain.get(stairdowny);
+        terrain.set(stairdowny, replaceIndex(str, stairdownx, 'v'));
+        endx = stairdowny;
+        endy = stairdownx;
+    }
+    
+    public void generatePlayerAndStairsKeyLock(){
+        //System.out.println("****************************");
+        //System.out.println("Generating Player and Stairs");
+        //System.out.println("****************************");
+        int playerx = (int) (Math.random() * (width - 1)) + 1;
+        int playery = (int) (Math.random() * (height - 1)) + 1;
+        int stairx = (int) (Math.random() * (width - 1)) + 1;
+        int stairy = (int) (Math.random() * (height - 1)) + 1;
+        
+        while (Math.sqrt(Math.pow((playerx-stairx), 2) + Math.pow((playery-stairy), 2)) < Math.sqrt(Math.pow(width - 2, 2) + Math.pow(height - 2, 2))/2 || (playerx >= width - 1 || playery >= height - 1 || stairx >= width -1 || stairy >= height - 1)){
+            playerx = (int) (Math.random() * (width - 1)) + 1;
+            playery = (int) (Math.random() * (height - 1)) + 1;
+            stairx = (int) (Math.random() * (width - 1)) + 1;
+            stairy = (int) (Math.random() * (height - 1)) + 1;
+        }
+        
+        String str = terrain.get(playery);
+        terrain.set(playery, replaceIndex(str, playerx, '@'));
+        startx = playery;
+        starty = playerx;
+        
+        str = terrain.get(stairy);
+        terrain.set(stairy, replaceIndex(str, stairx, 'v'));
+        endx = stairy;
+        endy = stairx;
+        
+    }
+    
     public void generateStairs(){
         //System.out.println("****************");
         //System.out.println("Generating Stairs");
@@ -274,7 +330,88 @@ public class Level {
         endy = stairdownx;
     }
     
+    public void generateStairsKeyLock(){
+        //System.out.println("****************");
+        //System.out.println("Generating Stairs");
+        //System.out.println("****************");
+        int stairupx = (int) (Math.random() * (width - 5)) + 5;
+        int stairupy = (int) (Math.random() * (height - 5)) + 5;
+        int stairdownx = (int) (Math.random() * (width - 5)) + 5;
+        int stairdowny = (int) (Math.random() * (height - 5)) + 5;
+        
+        while (Math.sqrt(Math.pow((stairupx-stairdownx), 2) + Math.pow((stairupy-stairdowny), 2)) < Math.max(width, height)/2 || (stairupx >= width - 1 || stairupy >= height - 1 || stairdownx >= width -1 || stairdowny >= height - 1)){
+            //System.out.println("invalid distance");
+            stairupx = (int) (Math.random() * (width - 5)) + 5;
+            stairupy = (int) (Math.random() * (height - 5)) + 5;
+            stairdownx = (int) (Math.random() * (width - 5)) + 5;
+            stairdowny = (int) (Math.random() * (height - 5)) + 5;
+        }
+        
+        String str = terrain.get(stairupy);
+        terrain.set(stairupy, replaceIndex(str, stairupx, '^'));
+        startx = stairupy;
+        starty = stairupx;
+        
+        str = terrain.get(stairdowny);
+        terrain.set(stairdowny, replaceIndex(str, stairdownx, 'v'));
+        endx = stairdowny;
+        endy = stairdownx;
+    }
+    
     public void generateStairsAndEnd(){
+        int stairupx = (int) (Math.random() * (width - 3)) + 3;
+        int stairupy = (int) (Math.random() * (height - 3)) + 3;
+        int gemx = (int) (Math.random() * (width - 3)) + 3;
+        int gemy = (int) (Math.random() * (height - 3)) + 3;
+        
+        while (Math.sqrt(Math.pow((stairupx-gemx), 2) + Math.pow((stairupy-gemy), 2)) < /*Math.sqrt(Math.pow(width - 2, 2) + Math.pow(height - 2, 2))/2*/ Math.max(width, height)/2 || (stairupx >= width - 1 || stairupy >= height - 1 || gemx >= width -1 || gemy >= height - 1)){
+            //System.out.println("invalid distance");
+            stairupx = (int) (Math.random() * (width - 3)) + 3;
+            stairupy = (int) (Math.random() * (height - 3)) + 3;
+            gemx = (int) (Math.random() * (width - 3)) + 3;
+            gemy = (int) (Math.random() * (height - 3)) + 3;
+        }
+        
+        String str = terrain.get(stairupy);
+        terrain.set(stairupy, replaceIndex(str, stairupx, '^'));
+        startx = stairupy;
+        starty = stairupx;
+        
+        str = terrain.get(gemy);
+        terrain.set(gemy, replaceIndex(str, gemx, 'g'));
+        endx = gemx;
+        endy = gemy;
+    }
+    
+    public void generateStairsAndEndNoObstacles(){
+        //System.out.println("****************");
+        //System.out.println("Generating Stairs");
+        //System.out.println("****************");
+        int stairupx = (int) (Math.random() * (width - 5)) + 5;
+        int stairupy = (int) (Math.random() * (height - 5)) + 5;
+        int gemx = (int) (Math.random() * (width - 5)) + 5;
+        int gemy = (int) (Math.random() * (height - 5)) + 5;
+        
+        while (Math.sqrt(Math.pow((stairupx-gemx), 2) + Math.pow((stairupy-gemy), 2)) < Math.max(width, height)/2 || (stairupx >= width - 1 || stairupy >= height - 1 || gemx >= width -1 || gemy >= height - 1)){
+            //System.out.println("invalid distance");
+            stairupx = (int) (Math.random() * (width - 5)) + 5;
+            stairupy = (int) (Math.random() * (height - 5)) + 5;
+            gemx = (int) (Math.random() * (width - 5)) + 5;
+            gemy = (int) (Math.random() * (height - 5)) + 5;
+        }
+        
+        String str = terrain.get(stairupy);
+        terrain.set(stairupy, replaceIndex(str, stairupx, '^'));
+        startx = stairupy;
+        starty = stairupx;
+        
+        str = terrain.get(gemy);
+        terrain.set(gemy, replaceIndex(str, gemx, 'v'));
+        endx = gemy;
+        endy = gemx;
+    }
+    
+    public void generateStairsAndEndKeyLock(){
         int stairupx = (int) (Math.random() * (width - 3)) + 3;
         int stairupy = (int) (Math.random() * (height - 3)) + 3;
         int gemx = (int) (Math.random() * (width - 3)) + 3;
@@ -364,6 +501,68 @@ public class Level {
     
     
     public void generateWallsNoObstacles(){
+        //System.out.println("*****************************");
+        //System.out.println("Generating Walls No Obstacles");
+        //System.out.println("*****************************");
+        int area = floorspace;
+        int numWalls = (int) ((Math.random() * (area/4))) + area/4;
+        System.out.println("NumWalls: " + numWalls);
+        int wallsMade = 0;
+        
+        while (wallsMade < numWalls){
+            //System.out.println("No-Obs Walls Made: " + wallsMade + "/" + numWalls);
+            int randx = (int) (Math.random() * (width - 1)) + 1;
+            int randy = (int) (Math.random() * (height - 1)) + 1;
+            
+            int adjWalls = 0;
+            String str = terrain.get(randy);
+            ArrayList<Character> adjTiles = getAdjTiles(randx, randy);
+            for (Character c : adjTiles){
+                if (c == '#'){
+                    adjWalls++;
+                }
+                    
+            }
+            if (str.charAt(randx) == '.' && adjWalls > 0){
+                terrain.set(randy, replaceIndex(str, randx, '#'));
+                wallsMade++;
+                //System.out.println((wallsMade*1.0)/(numWalls*1.0) + "%");
+            }
+        }
+        
+        while (!pathFromTo(startx, starty, endx, endy)){
+            //for (int i = 0; i < terrain.size(); i++){
+                //System.out.println(terrain.get(i));
+            //}
+            System.out.println("no path found");
+            removeWalls(terrain);
+            wallsMade = 0;
+            numWalls = (int) ((Math.random() * (area/2)));
+            while (wallsMade < numWalls){
+                //System.out.println("No-Obs Walls Made Again: " + wallsMade + "/" + numWalls);
+                
+                int randx = (int) (Math.random() * (width - 1)) + 1;
+                int randy = (int) (Math.random() * (height - 1)) + 1;
+                
+                int adjWalls = 0;
+                String str = terrain.get(randy);
+                ArrayList<Character> adjTiles = getAdjTiles(randx, randy);
+                for (Character c : adjTiles){
+                    if (c == '#'){
+                        adjWalls++;
+                    }
+                }
+                if (str.charAt(randx) == '.' && adjWalls > 0){
+                    terrain.set(randy, replaceIndex(str, randx, '#'));
+                    wallsMade++;
+                    //System.out.println((wallsMade*1.0)/(numWalls*1.0) + "%");
+                }
+            }
+        }
+    }
+    
+    
+    public void generateWallsKeyLock(){
         //System.out.println("*****************************");
         //System.out.println("Generating Walls No Obstacles");
         //System.out.println("*****************************");
@@ -460,6 +659,57 @@ public class Level {
             if (str.charAt(randx) == '.'){
                 terrain.set(randy, replaceIndex(str, randx, 's'));
                 enemiesPlaced++;
+            }
+        }
+    }
+    
+    public void generateTreasure(int num){
+        //System.out.println("******************");
+        //System.out.println("Generating Enemies");
+        //System.out.println("******************");
+        int numTreasure = num;
+        int treasurePlaced = 0;
+        
+        while (treasurePlaced < numTreasure){
+            int randx = (int) (Math.random() * (width - 1)) + 1;
+            int randy = (int) (Math.random() * (height - 1)) + 1;
+            
+            String str = terrain.get(randy);
+            if (str.charAt(randx) == '.'){
+                terrain.set(randy, replaceIndex(str, randx, 'c'));
+                treasurePlaced++;
+            }
+        }
+    }
+    
+    public void generateArmor(int num){
+        int numArmor = num;
+        int armorPlaced = 0;
+        
+        while (armorPlaced < numArmor){
+            int randx = (int) (Math.random() * (width - 1)) + 1;
+            int randy = (int) (Math.random() * (height - 1)) + 1;
+            
+            String str = terrain.get(randy);
+            if (str.charAt(randx) == '.'){
+                terrain.set(randy, replaceIndex(str, randx, 'a'));
+                armorPlaced++;
+            }
+        }
+    }
+    
+    public void generateWeapons(int num){
+        int numWeapons = num;
+        int weaponsPlaced = 0;
+        
+        while (weaponsPlaced < numWeapons){
+            int randx = (int) (Math.random() * (width - 1)) + 1;
+            int randy = (int) (Math.random() * (height - 1)) + 1;
+            
+            String str = terrain.get(randy);
+            if (str.charAt(randx) == '.'){
+                terrain.set(randy, replaceIndex(str, randx, 'a'));
+                weaponsPlaced++;
             }
         }
     }
