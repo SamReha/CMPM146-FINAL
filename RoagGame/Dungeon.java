@@ -28,6 +28,9 @@ public class Dungeon extends JPanel implements KeyListener {
      static final char ARMOR = 'a';
      static final char WEAPON = 'w';
      static final char AMULET = 'g';
+     static final char GATE = 'G';
+     static final char KEY = 'k';
+     static final char CHEST = 'c';
 	 
 	private static final long serialVersionUID = 7547983272105812599L;
     static Image floor;
