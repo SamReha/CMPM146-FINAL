@@ -14,25 +14,25 @@ import java.awt.Color;
 
 
 public class Dungeon extends JPanel implements KeyListener {
-	/**
-	 * 
-	 */
-	 
-	 static final char FLOOR = '.';
-	 static final char WALL = '#';
-	 static final char STAIRS_DOWN = 'v';
-	 static final char STAIRS_UP = '^';
-     static final char SKELETRON = 's';
-     static final char PLAYER = '@';
-     static final char EMPTY = ' ';
-     static final char ARMOR = 'a';
-     static final char WEAPON = 'w';
-     static final char AMULET = 'g';
-     static final char GATE = 'G';
-     static final char KEY = 'k';
-     static final char CHEST = 'c';
-	 
-	private static final long serialVersionUID = 7547983272105812599L;
+    /**
+     * 
+     */
+     
+    static final char FLOOR = '.';
+    static final char WALL = '#';
+    static final char STAIRS_DOWN = 'v';
+    static final char STAIRS_UP = '^';
+    static final char SKELETRON = 's';
+    static final char PLAYER = '@';
+    static final char EMPTY = ' ';
+    static final char ARMOR = 'a';
+    static final char WEAPON = 'w';
+    static final char AMULET = 'g';
+    static final char GATE = 'G';
+    static final char KEY = 'k';
+    static final char CHEST = 'c';
+     
+    private static final long serialVersionUID = 7547983272105812599L;
     static Image floor;
     static Image wall;
     static Image playerImg;
@@ -48,33 +48,33 @@ public class Dungeon extends JPanel implements KeyListener {
     static Image redhair;
     static Image amulet;
     static Image chest;
-	static boolean win = false;
-	static int worldwidth = 0;
+    static boolean win = false;
+    static int worldwidth = 0;
     static int worldheight = 0;
-	static ArrayList<Level> world = new ArrayList<Level>();
-	static Player player;
-	static boolean placed = false;
-	String playerdirection = "up";
+    static ArrayList<Level> world = new ArrayList<Level>();
+    static Player player;
+    static boolean placed = false;
+    String playerdirection = "up";
     static ArrayList<Enemy> enemies;
     static ArrayList<Armor> armor;
     static ArrayList<Weapon> weapons;
-	long startTime;
-	
-	Comparator<PriorTuple> comparator = new Comparator<PriorTuple>(){
+    long startTime;
+    
+    Comparator<PriorTuple> comparator = new Comparator<PriorTuple>(){
 
     @Override
     public int compare(PriorTuple o1, PriorTuple o2){
-		int x = o1.getDist();
-		int y = o2.getDist();
-		if (x < y) return -1;
-		if (x > y) return 1;
-		return 0;
+        int x = o1.getDist();
+        int y = o2.getDist();
+        if (x < y) return -1;
+        if (x > y) return 1;
+        return 0;
     }
 };
-	
-	public Dungeon(String file){
-		addKeyListener(this);
-		setFocusable(true);
+    
+    public Dungeon(String file){
+        addKeyListener(this);
+        setFocusable(true);
         ImageIcon pl = new ImageIcon("sprites\\human_f.png");
         ImageIcon fl = new ImageIcon("sprites\\rect_gray2.png");
         ImageIcon wa = new ImageIcon("sprites\\wall_vines6.png");
@@ -109,7 +109,7 @@ public class Dungeon extends JPanel implements KeyListener {
         armor = new ArrayList<Armor>();
         weapons = new ArrayList<Weapon>();
         player = new Player(10, 1, null, new Armor("Green Dress", "Chest", 0, -1, -1, -1, greendress), redhair);
-		//loadDungeon(file);
+        //loadDungeon(file);
         /*Level start = generateTopLevel();
         world.add(start);
         Level middle = generateMiddleLevel();
@@ -125,9 +125,9 @@ public class Dungeon extends JPanel implements KeyListener {
             setPlayerNearestOpen(1, 1);
             player.setZ(0);
         }*/
-		
+        
 
-	}
+    }
     
     public void restart(){
         enemies = new ArrayList<Enemy>();
@@ -155,25 +155,25 @@ public class Dungeon extends JPanel implements KeyListener {
             }
         }
     }
-	
-	public void paint(Graphics g){
-		super.paint(g);
-		Graphics2D g2d = (Graphics2D) g;
-		int lineNum = 0;
+    
+    public void paint(Graphics g){
+        super.paint(g);
+        Graphics2D g2d = (Graphics2D) g;
+        int lineNum = 0;
         int xNum = 0;
         int offset = 12;
         Level currLev = world.get(player.getZ());
-		for (int i = player.getX() - offset; i <= player.getX() + offset; i++){
+        for (int i = player.getX() - offset; i <= player.getX() + offset; i++){
             xNum = 0;
-			for (int j = player.getY() - offset; j < player.getY() + offset; j++){
+            for (int j = player.getY() - offset; j < player.getY() + offset; j++){
                     if (i < 0 || i > currLev.getTerrain().size() - 1 || j < 0 || j >= currLev.getTerrain().get(i).length()){
                         g2d.drawImage(empty, lineNum * 32, xNum * 32, null);
                     }
                     else {
                         char a = currLev.getTerrain().get(i).charAt(j);
-						if (a == FLOOR){
-							g2d.drawImage(floor, lineNum * 32, xNum * 32, null);
-						}
+                        if (a == FLOOR){
+                            g2d.drawImage(floor, lineNum * 32, xNum * 32, null);
+                        }
                         else if (a == WALL){
                             g2d.drawImage(wall, lineNum * 32, xNum * 32, null);
                         }
@@ -238,11 +238,11 @@ public class Dungeon extends JPanel implements KeyListener {
                             }
                         }
                     }
-				
-				xNum++;
-			} 
+                
+                xNum++;
+            } 
             lineNum++;
-		}
+        }
         
         g2d.setColor(Color.WHITE);
         g2d.setFont(new Font("TimesRoman", Font.BOLD, 16));
@@ -263,12 +263,12 @@ public class Dungeon extends JPanel implements KeyListener {
             g2d.setFont(new Font("TimesRoman", Font.PLAIN, 24));
             g2d.drawString("Press R to restart", 300, 450);
         }
-	}
-	
-	public static void loadDungeon(String file){
+    }
+    
+    public static void loadDungeon(String file){
         worldheight = 0;
             
-		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
             int numLine = 0;
             Level lev = new Level();
@@ -330,29 +330,29 @@ public class Dungeon extends JPanel implements KeyListener {
             }
             zlev++;
         }
-	}
+    }
 
-	public static void setPlayerNearestOpen(int x, int y){
-		if (world.get(0).getTerrain().get(x).charAt(y) == FLOOR){
-			player.setX(x);
-			player.setY(y);
-			placed = true;
-		} else {
-			if (!placed){
-				if (x > 0)
-					setPlayerNearestOpen(x - 1, y);
-				else if (x < worldwidth)
-					setPlayerNearestOpen(x + 1, y);
-				else if (y > 0)
-					setPlayerNearestOpen(x, y - 1);
-				else if (y < worldheight)
-					setPlayerNearestOpen(x, y + 1);	
-			}
-			
-		}
-	}
+    public static void setPlayerNearestOpen(int x, int y){
+        if (world.get(0).getTerrain().get(x).charAt(y) == FLOOR){
+            player.setX(x);
+            player.setY(y);
+            placed = true;
+        } else {
+            if (!placed){
+                if (x > 0)
+                    setPlayerNearestOpen(x - 1, y);
+                else if (x < worldwidth)
+                    setPlayerNearestOpen(x + 1, y);
+                else if (y > 0)
+                    setPlayerNearestOpen(x, y - 1);
+                else if (y < worldheight)
+                    setPlayerNearestOpen(x, y + 1); 
+            }
+            
+        }
+    }
 
-	public void keyPressed(KeyEvent e){
+    public void keyPressed(KeyEvent e){
         int id = e.getKeyCode();
         if (player.getHealth() > 0 && !win){
             boolean causesEnemyAction = false;
@@ -395,7 +395,7 @@ public class Dungeon extends JPanel implements KeyListener {
         }
         
         
-	}
+    }
     
     public Enemy enemyAt(int x, int y){
         for (Enemy e : enemies){
@@ -408,15 +408,15 @@ public class Dungeon extends JPanel implements KeyListener {
         
         return null;
     }
-	
-	public void performAction(int newx, int newy){
-		char a = world.get(player.getZ()).getTerrain().get(newx).charAt(newy);
-		/*if (a == TREE){
-			world[newx][newy] = DEADTREE;
-			findTrees(startTime);
-		} else if (a == LADDER_DOWN){
-		} else if (a == LADDER_UP){
-		}*/
+    
+    public void performAction(int newx, int newy){
+        char a = world.get(player.getZ()).getTerrain().get(newx).charAt(newy);
+        /*if (a == TREE){
+            world[newx][newy] = DEADTREE;
+            findTrees(startTime);
+        } else if (a == LADDER_DOWN){
+        } else if (a == LADDER_UP){
+        }*/
         if (a == STAIRS_DOWN){
             if (player.getZ() < world.size() - 1){
                 int x = 0;
@@ -496,17 +496,17 @@ public class Dungeon extends JPanel implements KeyListener {
                 armor.remove(we);
             }
         }
-		
-		repaint();
-	}
+        
+        repaint();
+    }
     
     public ArrayList<Level> getWorld(){
         return world;
     }
 
-	public void movePlayer(int x, int y){
-		int tx = player.getX() + x;
-		int ty = player.getY() + y;
+    public void movePlayer(int x, int y){
+        int tx = player.getX() + x;
+        int ty = player.getY() + y;
             if (!collidingWithEnemy(tx, ty)){
                 if (walkable(world.get(player.getZ()).getTerrain().get(tx).charAt(ty))){
                     player.setX(tx);
@@ -516,10 +516,10 @@ public class Dungeon extends JPanel implements KeyListener {
             } else {
                 player.attack(enemyAt(tx, ty));
             }
-			
-		repaint();
-		//printWorld();
-	}
+            
+        repaint();
+        //printWorld();
+    }
     
     public boolean collidingWithEnemy(int x, int y){
         for (Enemy en : enemies){
@@ -540,51 +540,51 @@ public class Dungeon extends JPanel implements KeyListener {
         
         return false;
     }
-		
-		public void keyTyped(KeyEvent e) {
-		}
+        
+        public void keyTyped(KeyEvent e) {
+        }
 
-		public void keyReleased(KeyEvent e){
+        public void keyReleased(KeyEvent e){
 
-		}
-	
-	public boolean emptySpace(char a){
-		if (a == FLOOR){
-			return true;
-		}
-		
-		return false;
-	}
-	
-	public ArrayList<PriorTuple> getAdj(Point p){
-		ArrayList<PriorTuple> parr = new ArrayList<PriorTuple>();
-		int x = p.getX();
-		int y = p.getY();
-		
-		if (x > 0 && emptySpace(world.get(player.getZ()).getTerrain().get(x-1).charAt(y))){
-			Point newp = new Point(x-1, y);
-			parr.add(new PriorTuple(1, newp));
-		}
-		if (x < 15 && emptySpace(world.get(player.getZ()).getTerrain().get(x+1).charAt(y))){
-			Point newp = new Point(x+1, y);
-			parr.add(new PriorTuple(1, newp));
-		}
-		if (y > 0 && emptySpace(world.get(player.getZ()).getTerrain().get(x).charAt(y-1))){
-			Point newp = new Point(x, y-1);
-			parr.add(new PriorTuple(1, newp));
-		}
-		if (y < 15 && emptySpace(world.get(player.getZ()).getTerrain().get(x).charAt(y+1))){
-			Point newp = new Point(x, y+1);
-			parr.add(new PriorTuple(1, newp));
-		}
-		
-		return parr;
-	}
-	
-	public double heuristic(int x, int y, int x2, int y2){
-		return Math.sqrt(Math.pow((x2-x), 2) + Math.pow((y2-y), 2));
-	}
-	
+        }
+    
+    public boolean emptySpace(char a){
+        if (a == FLOOR){
+            return true;
+        }
+        
+        return false;
+    }
+    
+    public ArrayList<PriorTuple> getAdj(Point p){
+        ArrayList<PriorTuple> parr = new ArrayList<PriorTuple>();
+        int x = p.getX();
+        int y = p.getY();
+        
+        if (x > 0 && emptySpace(world.get(player.getZ()).getTerrain().get(x-1).charAt(y))){
+            Point newp = new Point(x-1, y);
+            parr.add(new PriorTuple(1, newp));
+        }
+        if (x < 15 && emptySpace(world.get(player.getZ()).getTerrain().get(x+1).charAt(y))){
+            Point newp = new Point(x+1, y);
+            parr.add(new PriorTuple(1, newp));
+        }
+        if (y > 0 && emptySpace(world.get(player.getZ()).getTerrain().get(x).charAt(y-1))){
+            Point newp = new Point(x, y-1);
+            parr.add(new PriorTuple(1, newp));
+        }
+        if (y < 15 && emptySpace(world.get(player.getZ()).getTerrain().get(x).charAt(y+1))){
+            Point newp = new Point(x, y+1);
+            parr.add(new PriorTuple(1, newp));
+        }
+        
+        return parr;
+    }
+    
+    public double heuristic(int x, int y, int x2, int y2){
+        return Math.sqrt(Math.pow((x2-x), 2) + Math.pow((y2-y), 2));
+    }
+    
     public double heuristic(Point p1, Point p2){
         return Math.sqrt(Math.pow((p2.getX() - p1.getX()), 2) + Math.pow((p2.getY() - p1.getY()), 2));
     }
@@ -842,7 +842,7 @@ public class Dungeon extends JPanel implements KeyListener {
               }
             }
           }        
-   world.add(newLev);
+            world.add(newLev);
         }else if(coms[0].equals("room") && coms[1].equals("keylock")){  //keylock midde
             int wid = (int) (Math.random() * 50) + 10;
             int hei = (int) (Math.random() * 50) + 10;
@@ -880,7 +880,7 @@ public class Dungeon extends JPanel implements KeyListener {
               }
             }
           }        
-        world.add(newLev);
+            world.add(newLev);
         }else if(coms[0].equals("room") && coms[1].equals("maze")){  //maze middle
             int wid = (int) (Math.random() * 50) + 50;
             int hei = (int) (Math.random() * 50) + 50;
@@ -918,7 +918,7 @@ public class Dungeon extends JPanel implements KeyListener {
               }
             }
           }  
-world.add(newLev);          
+            world.add(newLev);          
         }
 
         else if(coms[0].equals("end") && coms[1].equals("no_obstacle")){ //no obs end
@@ -959,7 +959,7 @@ world.add(newLev);
               }
             }
           }        
-        world.add(newLev);
+            world.add(newLev);
         }else if(coms[0].equals("end") && coms[1].equals("keylock")){   //keylock end
             int wid = (int) (Math.random() * 50) + 10;
             int hei = (int) (Math.random() * 50) + 10;
@@ -997,7 +997,7 @@ world.add(newLev);
               }
             }
           }        
-        world.add(newLev);
+            world.add(newLev);
         }else if(coms[0].equals("end") && coms[1].equals("maze")){     //maze end
             int wid = (int) (Math.random() * 50) + 50;
             int hei = (int) (Math.random() * 50) + 50;
@@ -1046,5 +1046,5 @@ world.add(newLev);
       System.err.println(e.getMessage());
     }
   }
-	
+    
 }
