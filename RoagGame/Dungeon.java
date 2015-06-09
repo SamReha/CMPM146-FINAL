@@ -594,7 +594,7 @@ public class Dungeon extends JPanel implements KeyListener {
         System.out.println("skeletrons invading");
         return newLev;
         
-    }
+    }   
     
     public Level generateKeyLock(){
         int wid = (int) (Math.random() * 50) + 10;
@@ -752,10 +752,9 @@ public class Dungeon extends JPanel implements KeyListener {
             int wid = (int) (Math.random() * 50) + 50;
             int hei = (int) (Math.random() * 50) + 50;
             Level newLev = new Level(wid, hei);
-          //build maze start
-          System.out.println("start, maze");
             newLev.generatePlayerAndStairs();
             newLev.generateWalls();
+            System.out.println("start, maze");
           if(coms[2].contains(":")){
             coms[2] = coms[2].replaceAll("[^0-9]+","");
             int num = Integer.parseInt(coms[2]);
