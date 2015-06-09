@@ -2,21 +2,48 @@
   "origin": [
     "#dungeon#"
   ], 
+  "enemy": [
+    "no_enemy", 
+    "skeletron:#random#"
+  ], 
+  "random": [
+    "1", 
+    "2", 
+    "3", 
+    "4", 
+    "5", 
+    "6", 
+    "7", 
+    "8", 
+    "9"
+  ], 
+  "middle": [
+    "#room#, #room#, #room#, #room#, #room#, #room#, #room#"
+  ], 
+  "obstacle": [
+    "no_obstacle", 
+    "keylock", 
+    "maze"
+  ], 
   "dungeon": [
     "#start#, #middle#, #end#"
   ], 
   "end": [
-    "(end)"
+    "(end #obstacle# #enemy# #pickup#)"
   ], 
   "room": [
-    "(room keylock)", 
-    "(room no_obstacle)"
-  ], 
-  "middle": [
-    "#room#", 
-    "#room#, #middle#"
+    "(#type# #obstacle# #enemy# #pickup#)"
   ], 
   "start": [
-    "(start)"
+    "(start #obstacle# #enemy# #pickup#)"
+  ], 
+  "pickup": [
+    "no_pickup", 
+    "armor:#random#", 
+    "weapon:#random#", 
+    "treasure:#random#"
+  ], 
+  "type": [
+    "room"
   ]
 }

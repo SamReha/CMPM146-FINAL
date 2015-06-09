@@ -1,1 +1,1 @@
-(room start), (room no_obstacle), (room maze), (room maze), (room end)
+(start maze skeletron:7 armor:7), (room no_obstacle no_enemy treasure:5), (room maze no_enemy weapon:9), (room keylock no_enemy weapon:5), (room maze no_enemy armor:3), (room maze no_enemy no_pickup), (room no_obstacle no_enemy armor:3), (room no_obstacle no_enemy weapon:7), (end no_obstacle skeletron:9 treasure:6)
