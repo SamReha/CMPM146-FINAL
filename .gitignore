@@ -60,4 +60,4 @@ docs/_build/
 target/
 
 # Our stuff
-/grammar_generator/dungeon.json
+*/dungeon.json
