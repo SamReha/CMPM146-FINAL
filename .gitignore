@@ -58,3 +58,6 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# Our stuff
+grammar_generator/dungeon.json
