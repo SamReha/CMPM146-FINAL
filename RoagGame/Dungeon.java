@@ -53,6 +53,9 @@ public class Dungeon extends JPanel implements KeyListener {
     static Image redhair;
     static Image amulet;
     static Image chest;
+    static Image gateopen;
+    static Image gateclosed;
+    static Image key;
     static boolean win = false;
     static int worldwidth = 0;
     static int worldheight = 0;
@@ -95,6 +98,9 @@ public class Dungeon extends JPanel implements KeyListener {
         ImageIcon rh = new ImageIcon("sprites\\fem_red.png");
         ImageIcon am = new ImageIcon("sprites\\stone3_magenta.png");
         ImageIcon ch = new ImageIcon("sprites\\chest.png");
+        ImageIcon go = new ImageIcon("sprites\\dngn_enter_zot_open.png");
+        ImageIcon gc = new ImageIcon("sprites\\dngn_enter_zot_closed.png");
+        ImageIcon ke = new ImageIcon("sprites\\key.png");
         playerImg = pl.getImage();
         floor = fl.getImage();
         wall = wa.getImage();
@@ -110,6 +116,9 @@ public class Dungeon extends JPanel implements KeyListener {
         redhair = rh.getImage();
         amulet = am.getImage();
         chest = ch.getImage();
+        gateopen = go.getImage();
+        gateclosed = gc.getImage();
+        key = ke.getImage();
         enemies = new ArrayList<Enemy>();
         armor = new ArrayList<Armor>();
         weapons = new ArrayList<Weapon>();
@@ -205,6 +214,21 @@ public class Dungeon extends JPanel implements KeyListener {
                         else if (a == CHEST){
                             g2d.drawImage(floor, lineNum * 32, xNum * 32, null);
                             g2d.drawImage(chest, lineNum * 32, xNum * 32, null);
+                        }
+                        else if (a == KEY){
+                            g2d.drawImage(floor, lineNum * 32, xNum * 32, null);
+                            if (!world.get(player.getZ()).hasKey()){
+                                g2d.drawImage(key, lineNum * 32, xNum * 32, null);
+                            }
+                            
+                        }
+                        else if (a == GATE){
+                            g2d.drawImage(floor, lineNum * 32, xNum * 32, null);
+                            if (world.get(player.getZ()).hasKey){
+                                g2d.drawImage(gateopen, lineNum * 32, xNum * 32, null);
+                            } else {
+                                g2d.drawImage(gateclosed, lineNum * 32, xNum * 32, null);
+                            }
                         }
                         else {
                             g2d.drawImage(empty, lineNum * 32, xNum * 32, null);
@@ -471,6 +495,10 @@ public class Dungeon extends JPanel implements KeyListener {
             win = true;
         }
         
+        else if (a == KEY){
+            world.get(player.getZ()).setHasKey(true);
+        }
+        
         for (int i = 0; i < armor.size(); i++){
             Armor ar = armor.get(i);
             if (ar.getZ() == player.getZ() && ar.getX() == newx && ar.getY() == newy){
@@ -546,7 +574,12 @@ public class Dungeon extends JPanel implements KeyListener {
     }
     
     public boolean walkable(char a){
-        if (a == FLOOR || a == SKELETRON || a == STAIRS_UP || a == STAIRS_DOWN || a == ARMOR || a == WEAPON || a == PLAYER || a == AMULET || a == CHEST){
+        if (world.get(player.getZ()).hasKey){
+            if (a == GATE){
+                return true;
+            }
+        }
+        if (a == FLOOR || a == SKELETRON || a == STAIRS_UP || a == STAIRS_DOWN || a == ARMOR || a == WEAPON || a == PLAYER || a == AMULET || a == CHEST || a == KEY){
             return true;
         }
         

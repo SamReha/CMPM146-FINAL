@@ -1,1 +1,1 @@
-(start no_obstacle no_enemy treasure:1), (room no_obstacle no_enemy armor:2), (room keylock skeletron:1 no_pickup), (end keylock skeletron:1 weapon:2)
+(start keylock no_enemy treasure:2), (room no_obstacle skeletron:1 treasure:2), (room no_obstacle skeletron:1 treasure:1), (room no_obstacle no_enemy armor:2), (end no_obstacle no_enemy treasure:2)
