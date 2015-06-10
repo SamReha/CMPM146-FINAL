@@ -27,7 +27,7 @@ fs.readFile('../grammar_generator/dungeon.json', 'utf8', function (err,data) {
             if(err) {
                 return console.log(err);
             }
-            console.log("Trace written to trace.txt");
+            console.log("Trace written to ..\\RoagGame\\trace.txt");
         }); 
     }
 });
