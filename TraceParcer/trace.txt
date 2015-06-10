@@ -1,1 +1,0 @@
-(start), (room no_obstacle), (room keylock), (room no_obstacle), (room keylock), (end)
