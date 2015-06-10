@@ -697,380 +697,369 @@ public class Dungeon extends JPanel implements KeyListener {
     }
     
     public void readTrace(String fn){
-        
-        
         String filename;
-    try {
-      filename = fn;
-      ReadFile file = new ReadFile(filename);
-      String[] Trace = file.OpenFile();
-      String delims = "[ ]";
-      for (int i = 0; i < Trace.length; i++){
-        String[] coms = Trace[i].split(delims);
-    
-    
-        if(coms[0].equals("start") && coms[1].equals("no_obstacle")){  //No obs start
-            int wid = (int) (Math.random() * 30) + 10;
-            int hei = (int) (Math.random() * 30) + 10;
-            Level newLev = new Level(wid, hei);
-          //build no obstacle start
-          System.out.println("start, no obs");
-            newLev.generatePlayerAndStairs();
-            newLev.generateWallsNoObstacles();
-          if(coms[2].contains(":")){
-            coms[2] = coms[2].replaceAll("[^0-9]+","");
-            int num = Integer.parseInt(coms[2]);
-            //place "num" enemies
-            newLev.generateEnemies(num);
-          }
-          for (int j=3;j<coms.length;j++){
-            if(coms[j].contains(":")){
-              if(coms[j].contains("treasure:")){
-                coms[j] = coms[j].replaceAll("[^0-9]+","");
-                int num = Integer.parseInt(coms[j]);
-                //place "num" treasure
-                System.out.println("t"+num);
-                newLev.generateTreasure(num);
-              }else if(coms[j].contains("armor:")){
-                coms[j] = coms[j].replaceAll("[^0-9]+","");
-                int num = Integer.parseInt(coms[j]);
-                //place "num" armor
-                System.out.println("a"+num);
-                newLev.generateArmor(num);
-              }else if(coms[j].contains("weapon:")){
-                coms[j] = coms[j].replaceAll("[^0-9]+","");
-                int num = Integer.parseInt(coms[j]);
-                //place "num" weapon
-                System.out.println("w"+num); 
-                newLev.generateWeapons(num);
-              }
-            }
-          }
+        try {
+            filename = fn;
+            ReadFile file = new ReadFile(filename);
+            String[] Trace = file.OpenFile();
+            String delims = "[ ]";
+            for (int i = 0; i < Trace.length; i++){
+                String[] coms = Trace[i].split(delims);
+                if(coms[0].equals("start") && coms[1].equals("no_obstacle")){  //No obs start
+                    int wid = (int) (Math.random() * 30) + 10;
+                    int hei = (int) (Math.random() * 30) + 10;
+                    Level newLev = new Level(wid, hei);
+                    //build no obstacle start
+                    System.out.println("start, no obs");
+                    newLev.generatePlayerAndStairs();
+                    newLev.generateWallsNoObstacles();
+                    if(coms[2].contains(":")){
+                        coms[2] = coms[2].replaceAll("[^0-9]+","");
+                        int num = Integer.parseInt(coms[2]);
+                        //place "num" enemies
+                        newLev.generateEnemies(num);
+                    }
+                for (int j=3;j<coms.length;j++){
+                    if(coms[j].contains(":")){
+                        if(coms[j].contains("treasure:")){
+                            coms[j] = coms[j].replaceAll("[^0-9]+","");
+                            int num = Integer.parseInt(coms[j]);
+                            //place "num" treasure
+                            System.out.println("t"+num);
+                            newLev.generateTreasure(num);
+                        }else if(coms[j].contains("armor:")){
+                            coms[j] = coms[j].replaceAll("[^0-9]+","");
+                            int num = Integer.parseInt(coms[j]);
+                            //place "num" armor
+                            System.out.println("a"+num);
+                            newLev.generateArmor(num);
+                        }else if(coms[j].contains("weapon:")){
+                            coms[j] = coms[j].replaceAll("[^0-9]+","");
+                            int num = Integer.parseInt(coms[j]);
+                            //place "num" weapon
+                            System.out.println("w"+num); 
+                            newLev.generateWeapons(num);
+                        }
+                    }
+                }
                 
-          world.add(newLev);
-        
-        }else if(coms[0].equals("start") && coms[1].equals("keylock")){ //keylock start
-            int wid = (int) (Math.random() * 50) + 10;
-            int hei = (int) (Math.random() * 50) + 10;
-            Level newLev = new Level(wid, hei);
-          //build keylock start
-          System.out.println("start, keylock");
-            newLev.generatePlayerAndStairsKeyLock();
-            newLev.generateWallsKeyLock();
-          if(coms[2].contains(":")){
-            coms[2] = coms[2].replaceAll("[^0-9]+","");
-            int num = Integer.parseInt(coms[2]);
-            //place "num" enemies
-            newLev.generateEnemies(num);
-          }
-          for (int j=3;j<coms.length;j++){
-            if(coms[j].contains(":")){
-              if(coms[j].contains("treasure:")){
-                coms[j] = coms[j].replaceAll("[^0-9]+","");
-                int num = Integer.parseInt(coms[j]);
-                //place "num" treasure
-                System.out.println("t"+num);
-                newLev.generateTreasure(num);
-              }else if(coms[j].contains("armor:")){
-                coms[j] = coms[j].replaceAll("[^0-9]+","");
-                int num = Integer.parseInt(coms[j]);
-                //place "num" armor
-                System.out.println("a"+num);
-                newLev.generateArmor(num);
-              }else if(coms[j].contains("weapon:")){
-                coms[j] = coms[j].replaceAll("[^0-9]+","");
-                int num = Integer.parseInt(coms[j]);
-                //place "num" weapon
-                System.out.println("w"+num);    
-                newLev.generateWeapons(num);
-              }
-            }
-          }
                 world.add(newLev);
-        }else if(coms[0].equals("start") && coms[1].equals("maze")){ //maze start
-            int wid = (int) (Math.random() * 50) + 50;
-            int hei = (int) (Math.random() * 50) + 50;
-            Level newLev = new Level(wid, hei);
-            newLev.generatePlayerAndStairs();
-            newLev.generateWalls();
-            System.out.println("start, maze");
-          if(coms[2].contains(":")){
-            coms[2] = coms[2].replaceAll("[^0-9]+","");
-            int num = Integer.parseInt(coms[2]);
-            System.out.println("e"+num);
-            //place "num" enemies
-            newLev.generateEnemies(num);
-          }
-          for (int j=3;j<coms.length;j++){
-            if(coms[j].contains(":")){
-              if(coms[j].contains("treasure:")){
-                coms[j] = coms[j].replaceAll("[^0-9]+","");
-                int num = Integer.parseInt(coms[j]);
-                //place "num" treasure
-                System.out.println("t"+num);
-                newLev.generateTreasure(num);
-              }else if(coms[j].contains("armor:")){
-                coms[j] = coms[j].replaceAll("[^0-9]+","");
-                int num = Integer.parseInt(coms[j]);
-                //place "num" armor
-                System.out.println("a"+num);
-                newLev.generateArmor(num);
-              }else if(coms[j].contains("weapon:")){
-                coms[j] = coms[j].replaceAll("[^0-9]+","");
-                int num = Integer.parseInt(coms[j]);
-                //place "num" weapon
-                System.out.println("w"+num); 
-                newLev.generateWeapons(num);
-              }
-            }
-          }
-          
-          world.add(newLev);
-        }
-      
-      
-      
-      
-        else if(coms[0].equals("room") && coms[1].equals("no_obstacle")){ //no obs middle
-            int wid = (int) (Math.random() * 30) + 10;
-            int hei = (int) (Math.random() * 30) + 10;
-            Level newLev = new Level(wid, hei);
-          //build no obstacle room
-          System.out.println("room, no obs");
-            newLev.generateStairs();
-            newLev.generateWallsNoObstacles();
-          if(coms[2].contains(":")){
-            coms[2] = coms[2].replaceAll("[^0-9]+","");
-            int num = Integer.parseInt(coms[2]);
-            //place "num" enemies
-            newLev.generateEnemies(num);
-          }
-          for (int j=3;j<coms.length;j++){
-            if(coms[j].contains(":")){
-              if(coms[j].contains("treasure:")){
-                coms[j] = coms[j].replaceAll("[^0-9]+","");
-                int num = Integer.parseInt(coms[j]);
-                //place "num" treasure
-                System.out.println("t"+num);
-                newLev.generateTreasure(num);
-              }else if(coms[j].contains("armor:")){
-                coms[j] = coms[j].replaceAll("[^0-9]+","");
-                int num = Integer.parseInt(coms[j]);
-                //place "num" armor
-                System.out.println("a"+num);
-                newLev.generateArmor(num);
-              }else if(coms[j].contains("weapon:")){
-                coms[j] = coms[j].replaceAll("[^0-9]+","");
-                int num = Integer.parseInt(coms[j]);
-                //place "num" weapon
-                System.out.println("w"+num); 
-                newLev.generateWeapons(num);
-              }
-            }
-          }        
+        
+            }else if(coms[0].equals("start") && coms[1].equals("keylock")){ //keylock start
+                int wid = (int) (Math.random() * 50) + 10;
+                int hei = (int) (Math.random() * 50) + 10;
+                Level newLev = new Level(wid, hei);
+                //build keylock start
+                System.out.println("start, keylock");
+                newLev.generatePlayerAndStairsKeyLock();
+                newLev.generateWallsKeyLock();
+                if(coms[2].contains(":")){
+                    coms[2] = coms[2].replaceAll("[^0-9]+","");
+                    int num = Integer.parseInt(coms[2]);
+                    //place "num" enemies
+                    newLev.generateEnemies(num);
+                }
+                for (int j=3;j<coms.length;j++){
+                    if(coms[j].contains(":")){
+                        if(coms[j].contains("treasure:")){
+                            coms[j] = coms[j].replaceAll("[^0-9]+","");
+                            int num = Integer.parseInt(coms[j]);
+                            //place "num" treasure
+                            System.out.println("t"+num);
+                            newLev.generateTreasure(num);
+                        }else if(coms[j].contains("armor:")){
+                            coms[j] = coms[j].replaceAll("[^0-9]+","");
+                            int num = Integer.parseInt(coms[j]);
+                            //place "num" armor
+                            System.out.println("a"+num);
+                            newLev.generateArmor(num);
+                        }else if(coms[j].contains("weapon:")){
+                            coms[j] = coms[j].replaceAll("[^0-9]+","");
+                            int num = Integer.parseInt(coms[j]);
+                            //place "num" weapon
+                            System.out.println("w"+num);    
+                            newLev.generateWeapons(num);
+                        }
+                    }
+                }
+                world.add(newLev);
+            }else if(coms[0].equals("start") && coms[1].equals("maze")){ //maze start
+                int wid = (int) (Math.random() * 50) + 50;
+                int hei = (int) (Math.random() * 50) + 50;
+                Level newLev = new Level(wid, hei);
+                newLev.generatePlayerAndStairs();
+                newLev.generateWalls();
+                System.out.println("start, maze");
+                if(coms[2].contains(":")){
+                    coms[2] = coms[2].replaceAll("[^0-9]+","");
+                    int num = Integer.parseInt(coms[2]);
+                    System.out.println("e"+num);
+                    //place "num" enemies
+                    newLev.generateEnemies(num);
+                }
+                for (int j=3;j<coms.length;j++){
+                    if(coms[j].contains(":")){
+                        if(coms[j].contains("treasure:")){
+                            coms[j] = coms[j].replaceAll("[^0-9]+","");
+                            int num = Integer.parseInt(coms[j]);
+                            //place "num" treasure
+                            System.out.println("t"+num);
+                            newLev.generateTreasure(num);
+                        }else if(coms[j].contains("armor:")){
+                            coms[j] = coms[j].replaceAll("[^0-9]+","");
+                            int num = Integer.parseInt(coms[j]);
+                            //place "num" armor
+                            System.out.println("a"+num);
+                            newLev.generateArmor(num);
+                        }else if(coms[j].contains("weapon:")){
+                            coms[j] = coms[j].replaceAll("[^0-9]+","");
+                            int num = Integer.parseInt(coms[j]);
+                            //place "num" weapon
+                            System.out.println("w"+num); 
+                            newLev.generateWeapons(num);
+                        }
+                    }
+                }
+              
             world.add(newLev);
-        }else if(coms[0].equals("room") && coms[1].equals("keylock")){  //keylock midde
-            int wid = (int) (Math.random() * 50) + 10;
-            int hei = (int) (Math.random() * 50) + 10;
-            Level newLev = new Level(wid, hei);
-          //build keylock room
-          System.out.println("room, keylock");
-            newLev.generateStairsKeyLock();
-            newLev.generateWallsKeyLock();
-          if(coms[2].contains(":")){
-            coms[2] = coms[2].replaceAll("[^0-9]+","");
-            int num = Integer.parseInt(coms[2]);
-            //place "num" enemies
-            newLev.generateEnemies(num);
-          }
-          for (int j=3;j<coms.length;j++){
-            if(coms[j].contains(":")){
-              if(coms[j].contains("treasure:")){
-                coms[j] = coms[j].replaceAll("[^0-9]+","");
-                int num = Integer.parseInt(coms[j]);
-                //place "num" treasure
-                System.out.println("t"+num);
-                newLev.generateTreasure(num);
-              }else if(coms[j].contains("armor:")){
-                coms[j] = coms[j].replaceAll("[^0-9]+","");
-                int num = Integer.parseInt(coms[j]);
-                //place "num" armor
-                System.out.println("a"+num);
-                newLev.generateArmor(num);
-              }else if(coms[j].contains("weapon:")){
-                coms[j] = coms[j].replaceAll("[^0-9]+","");
-                int num = Integer.parseInt(coms[j]);
-                //place "num" weapon
-                System.out.println("w"+num); 
-                newLev.generateWeapons(num);
-              }
-            }
-          }        
-            world.add(newLev);
-        }else if(coms[0].equals("room") && coms[1].equals("maze")){  //maze middle
-            int wid = (int) (Math.random() * 50) + 50;
-            int hei = (int) (Math.random() * 50) + 50;
-            Level newLev = new Level(wid, hei);
-          //build maze room
-          System.out.println("room, maze");
-            newLev.generateStairs();
-            newLev.generateWalls();
-          if(coms[2].contains(":")){
-            coms[2] = coms[2].replaceAll("[^0-9]+","");
-            int num = Integer.parseInt(coms[2]);
-            //place "num" enemies
-            newLev.generateEnemies(num);
-          }
-          for (int j=3;j<coms.length;j++){
-            if(coms[j].contains(":")){
-              if(coms[j].contains("treasure:")){
-                coms[j] = coms[j].replaceAll("[^0-9]+","");
-                int num = Integer.parseInt(coms[j]);
-                //place "num" treasure
-                System.out.println("t"+num);
-                newLev.generateTreasure(num);
-              }else if(coms[j].contains("armor:")){
-                coms[j] = coms[j].replaceAll("[^0-9]+","");
-                int num = Integer.parseInt(coms[j]);
-                //place "num" armor
-                System.out.println("a"+num);
-                newLev.generateArmor(num);
-              }else if(coms[j].contains("weapon:")){
-                coms[j] = coms[j].replaceAll("[^0-9]+","");
-                int num = Integer.parseInt(coms[j]);
-                //place "num" weapon
-                System.out.println("w"+num);
-                newLev.generateWeapons(num);
-              }
-            }
-          }  
-            world.add(newLev);          
-        }
+            }else if(coms[0].equals("room") && coms[1].equals("no_obstacle")){ //no obs middle
+                int wid = (int) (Math.random() * 30) + 10;
+                int hei = (int) (Math.random() * 30) + 10;
+                Level newLev = new Level(wid, hei);
+                //build no obstacle room
+                System.out.println("room, no obs");
+                newLev.generateStairs();
+                newLev.generateWallsNoObstacles();
+                if(coms[2].contains(":")){
+                    coms[2] = coms[2].replaceAll("[^0-9]+","");
+                    int num = Integer.parseInt(coms[2]);
+                    //place "num" enemies
+                    newLev.generateEnemies(num);
+                }
+                for (int j=3;j<coms.length;j++){
+                    if(coms[j].contains(":")){
+                        if(coms[j].contains("treasure:")){
+                            coms[j] = coms[j].replaceAll("[^0-9]+","");
+                            int num = Integer.parseInt(coms[j]);
+                            //place "num" treasure
+                            System.out.println("t"+num);
+                            newLev.generateTreasure(num);
+                        }else if(coms[j].contains("armor:")){
+                            coms[j] = coms[j].replaceAll("[^0-9]+","");
+                            int num = Integer.parseInt(coms[j]);
+                            //place "num" armor
+                            System.out.println("a"+num);
+                            newLev.generateArmor(num);
+                        }else if(coms[j].contains("weapon:")){
+                            coms[j] = coms[j].replaceAll("[^0-9]+","");
+                            int num = Integer.parseInt(coms[j]);
+                            //place "num" weapon
+                            System.out.println("w"+num); 
+                            newLev.generateWeapons(num);
+                        }
+                    }
+                }        
+                world.add(newLev);
+            }else if(coms[0].equals("room") && coms[1].equals("keylock")){  //keylock midde
+                int wid = (int) (Math.random() * 50) + 10;
+                int hei = (int) (Math.random() * 50) + 10;
+                Level newLev = new Level(wid, hei);
+                //build keylock room
+                System.out.println("room, keylock");
+                newLev.generateStairsKeyLock();
+                newLev.generateWallsKeyLock();
+                if(coms[2].contains(":")){
+                    coms[2] = coms[2].replaceAll("[^0-9]+","");
+                    int num = Integer.parseInt(coms[2]);
+                    //place "num" enemies
+                    newLev.generateEnemies(num);
+                }
+                for (int j=3;j<coms.length;j++){
+                    if(coms[j].contains(":")){
+                        if(coms[j].contains("treasure:")){
+                            coms[j] = coms[j].replaceAll("[^0-9]+","");
+                            int num = Integer.parseInt(coms[j]);
+                            //place "num" treasure
+                            System.out.println("t"+num);
+                            newLev.generateTreasure(num);
+                        }else if(coms[j].contains("armor:")){
+                            coms[j] = coms[j].replaceAll("[^0-9]+","");
+                            int num = Integer.parseInt(coms[j]);
+                            //place "num" armor
+                            System.out.println("a"+num);
+                            newLev.generateArmor(num);
+                        }else if(coms[j].contains("weapon:")){
+                            coms[j] = coms[j].replaceAll("[^0-9]+","");
+                            int num = Integer.parseInt(coms[j]);
+                            //place "num" weapon
+                            System.out.println("w"+num); 
+                            newLev.generateWeapons(num);
+                        }
+                    }
+                }        
+                world.add(newLev);
+            }else if(coms[0].equals("room") && coms[1].equals("maze")){  //maze middle
+                int wid = (int) (Math.random() * 50) + 50;
+                int hei = (int) (Math.random() * 50) + 50;
+                Level newLev = new Level(wid, hei);
+                //build maze room
+                System.out.println("room, maze");
+                newLev.generateStairs();
+                newLev.generateWalls();
+                if(coms[2].contains(":")){
+                    coms[2] = coms[2].replaceAll("[^0-9]+","");
+                    int num = Integer.parseInt(coms[2]);
+                    //place "num" enemies
+                    newLev.generateEnemies(num);
+                }
+                for (int j=3;j<coms.length;j++){
+                    if(coms[j].contains(":")){
+                        if(coms[j].contains("treasure:")){
+                            coms[j] = coms[j].replaceAll("[^0-9]+","");
+                            int num = Integer.parseInt(coms[j]);
+                            //place "num" treasure
+                            System.out.println("t"+num);
+                            newLev.generateTreasure(num);
+                        }else if(coms[j].contains("armor:")){
+                            coms[j] = coms[j].replaceAll("[^0-9]+","");
+                            int num = Integer.parseInt(coms[j]);
+                            //place "num" armor
+                            System.out.println("a"+num);
+                            newLev.generateArmor(num);
+                        }else if(coms[j].contains("weapon:")){
+                            coms[j] = coms[j].replaceAll("[^0-9]+","");
+                            int num = Integer.parseInt(coms[j]);
+                            //place "num" weapon
+                            System.out.println("w"+num);
+                            newLev.generateWeapons(num);
+                        }
+                    }
+                }  
+                world.add(newLev);          
+            }else if(coms[0].equals("end") && coms[1].equals("no_obstacle")){ //no obs end
+                int wid = (int) (Math.random() * 30) + 10;
+                int hei = (int) (Math.random() * 30) + 10;
+                Level newLev = new Level(wid, hei);
+                //build no obstacle end
+                System.out.println("end, no obs");
+                newLev.generateStairsAndEnd();
+                newLev.generateWallsNoObstacles();
+                if(coms[2].contains(":")){
+                    coms[2] = coms[2].replaceAll("[^0-9]+","");
+                    int num = Integer.parseInt(coms[2]);
+                    System.out.println("e"+num);
+                    //place "num" enemies
+                    newLev.generateEnemies(num);
+                }
+                for (int j=3;j<coms.length;j++){
+                    if(coms[j].contains(":")){
+                        if(coms[j].contains("treasure:")){
+                            coms[j] = coms[j].replaceAll("[^0-9]+","");
+                            int num = Integer.parseInt(coms[j]);
+                            //place "num" treasure
+                            System.out.println("t"+num);
+                            newLev.generateTreasure(num);
+                        }else if(coms[j].contains("armor:")){
+                            coms[j] = coms[j].replaceAll("[^0-9]+","");
+                            int num = Integer.parseInt(coms[j]);
+                            //place "num" armor
+                            System.out.println("a"+num);
+                            newLev.generateArmor(num);
+                        }else if(coms[j].contains("weapon:")){
+                            coms[j] = coms[j].replaceAll("[^0-9]+","");
+                            int num = Integer.parseInt(coms[j]);
+                            //place "num" weapon
+                            System.out.println("w"+num);
+                            newLev.generateWeapons(num);
+                        }
+                    }
+                }        
+                world.add(newLev);
+            }else if(coms[0].equals("end") && coms[1].equals("keylock")){   //keylock end
+                int wid = (int) (Math.random() * 50) + 10;
+                int hei = (int) (Math.random() * 50) + 10;
+                Level newLev = new Level(wid, hei);
+                //build keylock end
+                System.out.println("end, keylock");
+                newLev.generateStairsAndEndKeyLock();
+                newLev.generateWallsKeyLock();
+                if(coms[2].contains(":")){
+                    coms[2] = coms[2].replaceAll("[^0-9]+","");
+                    int num = Integer.parseInt(coms[2]);
+                    //place "num" enemies
+                    newLev.generateEnemies(num);
+                }
+                for (int j=3;j<coms.length;j++){
+                    if(coms[j].contains(":")){
+                        if(coms[j].contains("treasure:")){
+                            coms[j] = coms[j].replaceAll("[^0-9]+","");
+                            int num = Integer.parseInt(coms[j]);
+                            //place "num" treasure
+                            System.out.println("t"+num);
+                            newLev.generateTreasure(num);
+                        }else if(coms[j].contains("armor:")){
+                            coms[j] = coms[j].replaceAll("[^0-9]+","");
+                            int num = Integer.parseInt(coms[j]);
+                            //place "num" armor
+                            System.out.println("a"+num);
+                            newLev.generateArmor(num);
+                        }else if(coms[j].contains("weapon:")){
+                            coms[j] = coms[j].replaceAll("[^0-9]+","");
+                            int num = Integer.parseInt(coms[j]);
+                            //place "num" weapon
+                            System.out.println("w"+num);  
+                            newLev.generateWeapons(num);
+                        }
+                    }
+                }        
+                world.add(newLev);
+            }else if(coms[0].equals("end") && coms[1].equals("maze")){     //maze end
+                int wid = (int) (Math.random() * 50) + 50;
+                int hei = (int) (Math.random() * 50) + 50;
+                Level newLev = new Level(wid, hei);
+                //build maze room
+                System.out.println("end, maze");
+                newLev.generateStairsAndEnd();
+                newLev.generateWalls();
+                if(coms[2].contains(":")){
+                    coms[2] = coms[2].replaceAll("[^0-9]+","");
+                    int num = Integer.parseInt(coms[2]);
+                    System.out.println("e"+num);
+                    //place "num" enemies
+                    newLev.generateEnemies(num);
+                }
+                for (int j=3;j<coms.length;j++){
+                    if(coms[j].contains(":")){
+                        if(coms[j].contains("treasure:")){
+                            coms[j] = coms[j].replaceAll("[^0-9]+","");
+                            int num = Integer.parseInt(coms[j]);
+                            //place "num" treasure
+                            System.out.println("t"+num);
+                            newLev.generateTreasure(num);
+                        }else if(coms[j].contains("armor:")){
+                            coms[j] = coms[j].replaceAll("[^0-9]+","");
+                            int num = Integer.parseInt(coms[j]);
+                            //place "num" armor
+                            System.out.println("a"+num);
+                            newLev.generateArmor(num);
+                        }else if(coms[j].contains("weapon:")){
+                            coms[j] = coms[j].replaceAll("[^0-9]+","");
+                            int num = Integer.parseInt(coms[j]);
+                            //place "num" weapon
+                            System.out.println("w"+num);    
+                            newLev.generateWeapons(num);
+                        }
+                    }
+                } 
 
-        else if(coms[0].equals("end") && coms[1].equals("no_obstacle")){ //no obs end
-            int wid = (int) (Math.random() * 30) + 10;
-            int hei = (int) (Math.random() * 30) + 10;
-            Level newLev = new Level(wid, hei);
-          //build no obstacle end
-          System.out.println("end, no obs");
-            newLev.generateStairsAndEnd();
-            newLev.generateWallsNoObstacles();
-          if(coms[2].contains(":")){
-            coms[2] = coms[2].replaceAll("[^0-9]+","");
-            int num = Integer.parseInt(coms[2]);
-            System.out.println("e"+num);
-            //place "num" enemies
-            newLev.generateEnemies(num);
-          }
-          for (int j=3;j<coms.length;j++){
-            if(coms[j].contains(":")){
-              if(coms[j].contains("treasure:")){
-                coms[j] = coms[j].replaceAll("[^0-9]+","");
-                int num = Integer.parseInt(coms[j]);
-                //place "num" treasure
-                System.out.println("t"+num);
-                newLev.generateTreasure(num);
-              }else if(coms[j].contains("armor:")){
-                coms[j] = coms[j].replaceAll("[^0-9]+","");
-                int num = Integer.parseInt(coms[j]);
-                //place "num" armor
-                System.out.println("a"+num);
-                newLev.generateArmor(num);
-              }else if(coms[j].contains("weapon:")){
-                coms[j] = coms[j].replaceAll("[^0-9]+","");
-                int num = Integer.parseInt(coms[j]);
-                //place "num" weapon
-                System.out.println("w"+num);
-                newLev.generateWeapons(num);
-              }
+                world.add(newLev);
             }
-          }        
-            world.add(newLev);
-        }else if(coms[0].equals("end") && coms[1].equals("keylock")){   //keylock end
-            int wid = (int) (Math.random() * 50) + 10;
-            int hei = (int) (Math.random() * 50) + 10;
-            Level newLev = new Level(wid, hei);
-          //build keylock end
-          System.out.println("end, keylock");
-            newLev.generateStairsAndEndKeyLock();
-            newLev.generateWallsKeyLock();
-          if(coms[2].contains(":")){
-            coms[2] = coms[2].replaceAll("[^0-9]+","");
-            int num = Integer.parseInt(coms[2]);
-            //place "num" enemies
-            newLev.generateEnemies(num);
-          }
-          for (int j=3;j<coms.length;j++){
-            if(coms[j].contains(":")){
-              if(coms[j].contains("treasure:")){
-                coms[j] = coms[j].replaceAll("[^0-9]+","");
-                int num = Integer.parseInt(coms[j]);
-                //place "num" treasure
-                System.out.println("t"+num);
-                newLev.generateTreasure(num);
-              }else if(coms[j].contains("armor:")){
-                coms[j] = coms[j].replaceAll("[^0-9]+","");
-                int num = Integer.parseInt(coms[j]);
-                //place "num" armor
-                System.out.println("a"+num);
-                newLev.generateArmor(num);
-              }else if(coms[j].contains("weapon:")){
-                coms[j] = coms[j].replaceAll("[^0-9]+","");
-                int num = Integer.parseInt(coms[j]);
-                //place "num" weapon
-                System.out.println("w"+num);  
-                newLev.generateWeapons(num);
-              }
-            }
-          }        
-            world.add(newLev);
-        }else if(coms[0].equals("end") && coms[1].equals("maze")){     //maze end
-            int wid = (int) (Math.random() * 50) + 50;
-            int hei = (int) (Math.random() * 50) + 50;
-            Level newLev = new Level(wid, hei);
-          //build maze room
-          System.out.println("end, maze");
-            newLev.generateStairsAndEnd();
-            newLev.generateWalls();
-          if(coms[2].contains(":")){
-            coms[2] = coms[2].replaceAll("[^0-9]+","");
-            int num = Integer.parseInt(coms[2]);
-            System.out.println("e"+num);
-            //place "num" enemies
-            newLev.generateEnemies(num);
-          }
-          for (int j=3;j<coms.length;j++){
-            if(coms[j].contains(":")){
-              if(coms[j].contains("treasure:")){
-                coms[j] = coms[j].replaceAll("[^0-9]+","");
-                int num = Integer.parseInt(coms[j]);
-                //place "num" treasure
-                System.out.println("t"+num);
-                newLev.generateTreasure(num);
-              }else if(coms[j].contains("armor:")){
-                coms[j] = coms[j].replaceAll("[^0-9]+","");
-                int num = Integer.parseInt(coms[j]);
-                //place "num" armor
-                System.out.println("a"+num);
-                newLev.generateArmor(num);
-              }else if(coms[j].contains("weapon:")){
-                coms[j] = coms[j].replaceAll("[^0-9]+","");
-                int num = Integer.parseInt(coms[j]);
-                //place "num" weapon
-                System.out.println("w"+num);    
-                newLev.generateWeapons(num);
-              }
-            }
-          } 
-
-           world.add(newLev);
         }
-      }
     } catch(ArrayIndexOutOfBoundsException e) {
       System.err.println("No File");
     } catch(IOException e) {
       System.err.println(e.getMessage());
     }
-  }
+}
     
 }
