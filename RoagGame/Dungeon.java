@@ -14,6 +14,7 @@ import java.io.OutputStreamWriter;
 import java.io.IOException;
 import java.awt.Color;
 import java.io.File;
+import java.lang.ProcessBuilder.Redirect;
 //import java.God.*;
 
 
@@ -462,6 +463,10 @@ public class Dungeon extends JPanel implements KeyListener {
             }
         }
         
+        else if (a == CHEST){
+            player.setArmor(new Armor("Metal Breast Plate", "Chest", 1, player.getX(), player.getY(), player.getZ(), metalbreastplate));
+        }
+        
         else if (a == AMULET){
             win = true;
         }
@@ -682,12 +687,17 @@ public class Dungeon extends JPanel implements KeyListener {
     public void getNewTrace(){
         try{
             String filepath = new File("").getAbsolutePath();
-            filepath.concat("..\\TraceParcer\\expander.js");
+            filepath = filepath.concat("\\..\\TraceParcer\\expander.js");
             /*Process pbj = new ProcessBuilder("node",filepath).start();
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(pbj.getOutputStream()));
             bw.*/
-            Process pbj = Runtime.getRuntime().exec("node " + filepath);
-            pbj.waitFor();
+            /*Process pbj = Runtime.getRuntime().exec("node " + filepath);
+            pbj.waitFor();*/
+            ProcessBuilder pbj = new ProcessBuilder("node", filepath);
+            pbj.redirectOutput(Redirect.INHERIT);
+            pbj.redirectError(Redirect.INHERIT);
+            Process p = pbj.start();
+            p.waitFor();
             System.out.println("Peanut Butter currently Jellying");
         } catch (IOException e){
             System.out.println("Peanut Butter failed to Jelly");
