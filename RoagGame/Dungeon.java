@@ -9,8 +9,12 @@ import java.util.TreeMap;
 import java.util.ArrayList;
 import java.io.FileReader;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.OutputStreamWriter;
 import java.io.IOException;
 import java.awt.Color;
+import java.io.File;
+//import java.God.*;
 
 
 public class Dungeon extends JPanel implements KeyListener {
@@ -72,7 +76,7 @@ public class Dungeon extends JPanel implements KeyListener {
     }
 };
     
-    public Dungeon(String file){
+    public Dungeon(){
         addKeyListener(this);
         setFocusable(true);
         ImageIcon pl = new ImageIcon("sprites\\human_f.png");
@@ -116,6 +120,7 @@ public class Dungeon extends JPanel implements KeyListener {
         world.add(middle);
         System.out.println(start);*/
         
+        getNewTrace();
         readTrace("trace.txt");
         
         parseWorld(world);
@@ -135,6 +140,8 @@ public class Dungeon extends JPanel implements KeyListener {
         weapons = new ArrayList<Weapon>();
         win = false;
         player = new Player(10, 1, null, new Armor("Green Dress", "Chest", 0, -1, -1, -1, greendress), redhair);
+        world = new ArrayList<Level>();
+        getNewTrace();
         readTrace("trace.txt");
         
         parseWorld(world);
@@ -672,7 +679,26 @@ public class Dungeon extends JPanel implements KeyListener {
         
     }
     
+    public void getNewTrace(){
+        try{
+            String filepath = new File("").getAbsolutePath();
+            filepath.concat("..\\TraceParcer\\expander.js");
+            /*Process pbj = new ProcessBuilder("node",filepath).start();
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(pbj.getOutputStream()));
+            bw.*/
+            Process pbj = Runtime.getRuntime().exec("node " + filepath);
+            pbj.waitFor();
+            System.out.println("Peanut Butter currently Jellying");
+        } catch (IOException e){
+            System.out.println("Peanut Butter failed to Jelly");
+        } catch (InterruptedException e){
+            System.out.println("Peanut Butter interrupted by Jelly");
+        }
+    }
+    
     public void readTrace(String fn){
+        
+        
         String filename;
     try {
       filename = fn;

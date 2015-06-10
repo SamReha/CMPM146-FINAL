@@ -98,7 +98,7 @@ public class Player {
             }
         }
         e.setHealth(e.getHealth() - damage);
-        System.out.println("Attacking " + e.getHealth());
+        //System.out.println("Attacking " + e.getHealth());
         if (e.getHealth() <= 0){
             e.die();
         }
@@ -113,7 +113,7 @@ public class Player {
             healthRegen = 0;
             if (health < maxHealth){
                 health++;
-                System.out.println("health " + health);
+                //System.out.println("health " + health);
             }
         }
     }

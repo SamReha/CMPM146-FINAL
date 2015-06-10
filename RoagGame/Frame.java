@@ -8,9 +8,8 @@ public class Frame extends JFrame {
 	public static int height = 800;
 	
 	public static void main(String[] args){
-		String file = args[0];
 		JFrame frame = new JFrame("Tears of the Mantis: Roag Colon:");
-		frame.add(new Dungeon(file));
+		frame.add(new Dungeon());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(width,height);
 		frame.setVisible(true);

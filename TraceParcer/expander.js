@@ -23,7 +23,7 @@ fs.readFile('../grammar_generator/dungeon.json', 'utf8', function (err,data) {
         var random_index = Math.floor((Math.random()*dummy_output.length));
         
         // SAVE SAMPLE TO TRACE.TXT
-        fs.writeFile("trace.txt", dummy_output[random_index], function(err) {
+        fs.writeFile("..\\RoagGame\\trace.txt", dummy_output[random_index], function(err) {
             if(err) {
                 return console.log(err);
             }

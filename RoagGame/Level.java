@@ -379,8 +379,8 @@ public class Level {
         
         str = terrain.get(gemy);
         terrain.set(gemy, replaceIndex(str, gemx, 'g'));
-        endx = gemx;
-        endy = gemy;
+        endx = gemy;
+        endy = gemx;
     }
     
     public void generateStairsAndEndNoObstacles(){
@@ -432,8 +432,8 @@ public class Level {
         
         str = terrain.get(gemy);
         terrain.set(gemy, replaceIndex(str, gemx, 'g'));
-        endx = gemx;
-        endy = gemy;
+        endx = gemy;
+        endy = gemx;
     }
     
     public void generateWalls(){
@@ -469,9 +469,9 @@ public class Level {
         while (!pathFromTo(startx, starty, endx, endy)){
             
             System.out.println("no path found");
-            for (int i = 0; i < terrain.size(); i++){
+            /*for (int i = 0; i < terrain.size(); i++){
                 System.out.println(terrain.get(i));
-            }
+            }*/
             removeWalls(terrain);
             wallsMade = 0;
             numWalls = (int) ((Math.random() * (area/3)) + area/4);
@@ -532,7 +532,7 @@ public class Level {
         
         while (!pathFromTo(startx, starty, endx, endy)){
             //for (int i = 0; i < terrain.size(); i++){
-                //System.out.println(terrain.get(i));
+            //    System.out.println(terrain.get(i));
             //}
             System.out.println("no path found");
             removeWalls(terrain);
