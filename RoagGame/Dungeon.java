@@ -541,7 +541,7 @@ public class Dungeon extends JPanel implements KeyListener {
     }
     
     public boolean walkable(char a){
-        if (a == FLOOR || a == SKELETRON || a == STAIRS_UP || a == STAIRS_DOWN || a == ARMOR || a == WEAPON || a == PLAYER || a == AMULET){
+        if (a == FLOOR || a == SKELETRON || a == STAIRS_UP || a == STAIRS_DOWN || a == ARMOR || a == WEAPON || a == PLAYER || a == AMULET || a == CHEST){
             return true;
         }
         
